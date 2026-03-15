@@ -29,6 +29,7 @@
     .chat-input { display:flex; gap:0.5rem; margin-top:1rem; }
     .chat-input textarea { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:0.6rem 0.9rem; color:var(--text); font-family:inherit; font-size:0.9rem; resize:none; min-height:60px; }
     .chat-input textarea:focus { outline:none; border-color:var(--accent); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
   </style>
 </head>
 <body>
@@ -149,6 +150,9 @@ async function loadTickets() {
     const date = new Date(t.date).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
     const s = t.statut || 'ouvert';
     const isClosed = s === 'ferme';
+    const lastMsg = t.reponses?.length ? t.reponses[t.reponses.length - 1] : null;
+    const hasNewStaffReply = lastMsg && !lastMsg.isUser;
+    const newBadge = hasNewStaffReply ? `<span style="font-size:0.65rem;background:rgba(248,81,73,0.2);color:#f87171;border:1px solid #f8514966;border-radius:8px;padding:0.15rem 0.5rem;font-weight:700;animation:pulse 1.5s infinite">💬 Réponse staff</span>` : '';
 
     // Message initial
     const msgs = [{ message: t.description, date: t.date, staff: t.discordUsername, isUser: true, avatar: t.discordAvatar, roleName: currentUser?.roleName || '', roleColor: currentUser?.roleColor || '#8b949e' }];
@@ -159,12 +163,17 @@ async function loadTickets() {
       const isMe = m.isUser;
       const time = new Date(m.date).toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
       const avatarHtml = m.avatar ? `<img src="${escHtml(m.avatar)}" alt="" />` : (isMe ? '👤' : '🛡️');
-      const roleHtml = m.roleName ? `<span style="font-size:0.68rem;padding:0.1rem 0.4rem;border-radius:8px;font-weight:600;border:1px solid;color:${m.roleColor||'#8b949e'};border-color:${(m.roleColor||'#8b949e')}66;background:${(m.roleColor||'#8b949e')}22">${escHtml(m.roleName)}</span>` : '';
+      const roleColor = m.roleColor || (isMe ? '#8b949e' : '#f87171');
+      const roleName = m.roleName || (isMe ? 'Membre' : 'Staff');
+      const roleHtml = `<span style="font-size:0.65rem;padding:0.1rem 0.4rem;border-radius:8px;font-weight:600;border:1px solid;color:${roleColor};border-color:${roleColor}66;background:${roleColor}22">${escHtml(roleName)}</span>`;
+      const staffBadge = !isMe ? `<span style="font-size:0.65rem;background:rgba(248,81,73,0.15);color:#f87171;border:1px solid #f8514966;border-radius:8px;padding:0.1rem 0.4rem;font-weight:700">🛡️ Staff</span>` : '';
       return `<div class="chat-bubble ${isMe ? 'user' : ''}">
         <div class="bubble-avatar">${avatarHtml}</div>
         <div class="bubble-content">
-          <div class="bubble-name" style="display:flex;align-items:center;gap:0.3rem;${isMe?'justify-content:flex-end':''}">${escHtml(m.staff)} ${roleHtml}</div>
-          <div class="bubble-msg">${escHtml(m.message)}</div>
+          <div class="bubble-name" style="display:flex;align-items:center;gap:0.3rem;flex-wrap:wrap;${isMe?'justify-content:flex-end':''}">
+            ${escHtml(m.staff)} ${roleHtml} ${staffBadge}
+          </div>
+          <div class="bubble-msg" style="${!isMe?'border-color:rgba(248,81,73,0.25);background:rgba(248,81,73,0.07)':''}">${escHtml(m.message)}</div>
           <div class="bubble-time">${time}</div>
         </div>
       </div>`;
@@ -178,25 +187,31 @@ async function loadTickets() {
 
     return `<div class="ticket-card">
       <div class="ticket-header" onclick="toggleTicket('tb-${t.id}','tc-${t.id}')">
-        <div>
+        <div style="min-width:0;flex:1">
           <div class="ticket-cat">${escHtml(t.categorie)}</div>
-          <strong>${escHtml(t.sujet)}</strong>
-          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem">${date}</div>
+          <strong style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(t.sujet)}</strong>
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.15rem">${date}</div>
         </div>
-        <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0">
+          ${newBadge}
           <span class="statut-badge ticket-statut-${s}">${statutLabel[s]||s}</span>
           <svg class="chevron" id="tc-${t.id}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </div>
       </div>
-      <div class="ticket-body" id="tb-${t.id}">
+      <div class="ticket-body ${hasNewStaffReply ? 'open' : ''}" id="tb-${t.id}">
         ${bubblesHtml}
         ${inputHtml}
       </div>
     </div>`;
   }).join('');
+  // Sync chevrons pour les tickets auto-ouverts
+  data.forEach(t => {
+    const lastMsg = t.reponses?.length ? t.reponses[t.reponses.length - 1] : null;
+    if (lastMsg && !lastMsg.isUser) {
+      document.getElementById(`tc-${t.id}`)?.classList.add('open');
+    }
+  });
 }
-
-function toggleTicket(bodyId, chevId) {
   document.getElementById(bodyId).classList.toggle('open');
   document.getElementById(chevId).classList.toggle('open');
 }
