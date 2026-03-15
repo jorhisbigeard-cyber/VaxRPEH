@@ -1,8 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const axios = require('axios');
-const fs = require('fs');
 const path = require('path');
+const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 const app = express();
@@ -18,8 +18,13 @@ const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 const CREATOR_ROLE_ID = process.env.CREATOR_ROLE_ID;
 const CREATOR_USER_ID = process.env.CREATOR_USER_ID;
 const ADMIN_USER_IDS = (process.env.ADMIN_USER_IDS || '').split(',').filter(Boolean);
+const MONGO_URI = process.env.MONGO_URI;
 
-const DATA_FILE = path.join(__dirname, 'candidatures.json');
+let db;
+MongoClient.connect(MONGO_URI).then(client => {
+  db = client.db('vaxrp');
+  console.log('✅ MongoDB connecté');
+}).catch(err => console.error('MongoDB error:', err));
 
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -30,13 +35,8 @@ app.use(session({
   cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }));
 
-if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, '[]');
-
-function loadCandidatures() {
-  return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-}
-function saveCandidatures(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+function isStaff(req) {
+  return req.session.isAdmin || req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID || req.session.user?.isAdmin || ADMIN_USER_IDS.includes(req.session.user?.id);
 }
 
 async function sendWebhook(entry) {
@@ -73,77 +73,52 @@ app.get('/auth/discord/callback', async (req, res) => {
   if (!code) return res.redirect('/?error=no_code');
   try {
     const tokenRes = await axios.post('https://discord.com/api/oauth2/token',
-      new URLSearchParams({
-        client_id: DISCORD_CLIENT_ID,
-        client_secret: DISCORD_CLIENT_SECRET,
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: REDIRECT_URI,
-      }),
+      new URLSearchParams({ client_id: DISCORD_CLIENT_ID, client_secret: DISCORD_CLIENT_SECRET, grant_type: 'authorization_code', code, redirect_uri: REDIRECT_URI }),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
     const accessToken = tokenRes.data.access_token;
-    const userRes = await axios.get('https://discord.com/api/users/@me', {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
+    const userRes = await axios.get('https://discord.com/api/users/@me', { headers: { Authorization: `Bearer ${accessToken}` } });
 
-    // Récupère les rôles du membre dans le serveur
     let memberRoles = [];
     try {
-      const memberRes = await axios.get(`https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
+      const memberRes = await axios.get(`https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`, { headers: { Authorization: `Bearer ${accessToken}` } });
       memberRoles = memberRes.data.roles || [];
     } catch {}
 
     const isCreator = memberRoles.includes(CREATOR_ROLE_ID) || userRes.data.id === CREATOR_USER_ID;
     const isAdmin = ADMIN_USER_IDS.includes(userRes.data.id);
 
-    // Vérifie si banni
-    const bans = loadBans();
-    if (bans.find(b => b.discordId === userRes.data.id)) {
+    const ban = await db.collection('bans').findOne({ discordId: userRes.data.id });
+    if (ban) {
       req.session.user = { id: userRes.data.id, username: userRes.data.username, avatar: userRes.data.avatar ? `https://cdn.discordapp.com/avatars/${userRes.data.id}/${userRes.data.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/0.png` };
       return res.redirect('/banni.html');
     }
+
     req.session.user = {
       id: userRes.data.id,
       username: userRes.data.username,
-      avatar: userRes.data.avatar
-        ? `https://cdn.discordapp.com/avatars/${userRes.data.id}/${userRes.data.avatar}.png`
-        : `https://cdn.discordapp.com/embed/avatars/0.png`,
-      isCreator,
-      isAdmin,
+      avatar: userRes.data.avatar ? `https://cdn.discordapp.com/avatars/${userRes.data.id}/${userRes.data.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/0.png`,
+      isCreator, isAdmin,
       roleName: isCreator ? 'Créateur' : isAdmin ? 'Admin' : null,
       roleColor: isCreator ? '#fbbf24' : isAdmin ? '#f87171' : null
     };
 
-    // Récupère le nom + couleur du rôle principal via le bot (seulement si pas déjà défini)
     if (!req.session.user.roleName) {
       try {
-        const rolesRes = await axios.get(`https://discord.com/api/v10/guilds/${GUILD_ID}/roles`, {
-          headers: { Authorization: `Bot ${BOT_TOKEN}` }
-        });
+        const rolesRes = await axios.get(`https://discord.com/api/v10/guilds/${GUILD_ID}/roles`, { headers: { Authorization: `Bot ${BOT_TOKEN}` } });
         const allRoles = rolesRes.data.sort((a, b) => b.position - a.position);
         const topRole = allRoles.find(r => memberRoles.includes(r.id) && r.name !== '@everyone');
-        if (topRole) {
-          req.session.user.roleName = topRole.name;
-          req.session.user.roleColor = topRole.color ? '#' + topRole.color.toString(16).padStart(6, '0') : '#8b949e';
-        } else {
-          req.session.user.roleName = 'Membre';
-          req.session.user.roleColor = '#8b949e';
-        }
+        req.session.user.roleName = topRole ? topRole.name : 'Membre';
+        req.session.user.roleColor = topRole?.color ? '#' + topRole.color.toString(16).padStart(6, '0') : '#8b949e';
       } catch {
         req.session.user.roleName = 'Membre';
         req.session.user.roleColor = '#8b949e';
       }
     }
-    // Sauvegarde les infos admin si c'est un admin
+
     if (isAdmin) {
-      const admins = loadAdminsList();
-      const idx = admins.findIndex(a => a.id === userRes.data.id);
-      const adminInfo = { id: userRes.data.id, username: userRes.data.username, avatar: userRes.data.avatar ? `https://cdn.discordapp.com/avatars/${userRes.data.id}/${userRes.data.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/0.png`, lastSeen: new Date().toISOString() };
-      if (idx >= 0) admins[idx] = adminInfo; else admins.push(adminInfo);
-      saveAdminsList(admins);
+      const adminInfo = { id: userRes.data.id, username: userRes.data.username, avatar: req.session.user.avatar, lastSeen: new Date().toISOString() };
+      await db.collection('admins').updateOne({ id: userRes.data.id }, { $set: adminInfo }, { upsert: true });
     }
 
     res.redirect('/form.html');
@@ -158,257 +133,155 @@ app.get('/api/me', (req, res) => {
   else res.status(401).json({ error: 'Non connecté' });
 });
 
-app.get('/auth/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/');
-});
+app.get('/auth/logout', (req, res) => { req.session.destroy(); res.redirect('/'); });
 
+// Candidatures
 app.post('/api/candidature', async (req, res) => {
   if (!req.session.user) return res.status(401).json({ error: 'Non connecté' });
-  const candidatures = loadCandidatures();
-  const already = candidatures.find(c => c.discordId === req.session.user.id);
+  const already = await db.collection('candidatures').findOne({ discordId: req.session.user.id });
   if (already) return res.status(400).json({ error: 'Tu as déjà soumis une candidature.' });
-  const entry = {
-    id: Date.now(),
-    discordId: req.session.user.id,
-    discordUsername: req.session.user.username,
-    discordAvatar: req.session.user.avatar,
-    date: new Date().toISOString(),
-    reponses: req.body
-  };
-  candidatures.push(entry);
-  saveCandidatures(candidatures);
+  const entry = { id: Date.now(), discordId: req.session.user.id, discordUsername: req.session.user.username, discordAvatar: req.session.user.avatar, date: new Date().toISOString(), reponses: req.body };
+  await db.collection('candidatures').insertOne(entry);
   await sendWebhook(entry);
   res.json({ success: true });
 });
 
 app.post('/api/admin/login', (req, res) => {
-  if (req.body.code === ADMIN_CODE) {
-    req.session.isAdmin = true;
-    res.json({ success: true });
-  } else {
-    res.status(403).json({ error: 'Code incorrect' });
-  }
+  if (req.body.code === ADMIN_CODE) { req.session.isAdmin = true; res.json({ success: true }); }
+  else res.status(403).json({ error: 'Code incorrect' });
 });
 
-app.get('/api/admin/candidatures', (req, res) => {
-  const ok = req.session.isAdmin || req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID || req.session.user?.isAdmin || ADMIN_USER_IDS.includes(req.session.user?.id);
-  if (!ok) return res.status(403).json({ error: 'Accès refusé' });
-  res.json(loadCandidatures());
+app.get('/api/admin/candidatures', async (req, res) => {
+  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
+  res.json(await db.collection('candidatures').find().toArray());
 });
 
-// Panel créateur — vérifie le rôle Discord OU l'ID utilisateur
 app.get('/api/creator/check', (req, res) => {
   if (!req.session.user) return res.status(401).json({ error: 'Non connecté' });
-  const ok = req.session.user.isCreator || req.session.user.id === CREATOR_USER_ID || req.session.user.isAdmin || ADMIN_USER_IDS.includes(req.session.user.id);
-  if (!ok) return res.status(403).json({ error: 'Accès refusé' });
+  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
   res.json({ ok: true });
 });
 
-app.get('/api/creator/candidatures', (req, res) => {
-  const ok = req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID || req.session.user?.isAdmin || ADMIN_USER_IDS.includes(req.session.user?.id);
-  if (!ok) return res.status(403).json({ error: 'Accès refusé' });
-  res.json(loadCandidatures());
+app.get('/api/creator/candidatures', async (req, res) => {
+  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
+  res.json(await db.collection('candidatures').find().toArray());
 });
 
-app.delete('/api/creator/candidature/:id', (req, res) => {
-  const ok = req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID || req.session.user?.isAdmin || ADMIN_USER_IDS.includes(req.session.user?.id);
-  if (!ok) return res.status(403).json({ error: 'Accès refusé' });
-  saveCandidatures(loadCandidatures().filter(c => c.id !== parseInt(req.params.id)));
+app.delete('/api/creator/candidature/:id', async (req, res) => {
+  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
+  await db.collection('candidatures').deleteOne({ id: parseInt(req.params.id) });
   res.json({ success: true });
 });
 
-// Staff — membres du serveur Discord avec rôles
-app.get('/api/staff', async (req, res) => {
-  try {
-    const membersRes = await axios.get(`https://discord.com/api/v10/guilds/${GUILD_ID}/members?limit=100`, {
-      headers: { Authorization: `Bot ${BOT_TOKEN}` }
-    });
-    const rolesRes = await axios.get(`https://discord.com/api/v10/guilds/${GUILD_ID}/roles`, {
-      headers: { Authorization: `Bot ${BOT_TOKEN}` }
-    });
-    const allRoles = rolesRes.data;
-    const members = membersRes.data
-      .filter(m => !m.user.bot && m.roles.length > 0)
-      .map(m => {
-        const memberRoles = m.roles
-          .map(rid => allRoles.find(r => r.id === rid))
-          .filter(r => r && r.name !== '@everyone')
-          .sort((a, b) => b.position - a.position);
-        return {
-          id: m.user.id,
-          username: m.nick || m.user.global_name || m.user.username,
-          avatar: m.user.avatar
-            ? `https://cdn.discordapp.com/avatars/${m.user.id}/${m.user.avatar}.png`
-            : `https://cdn.discordapp.com/embed/avatars/0.png`,
-          roles: memberRoles.map(r => ({ id: r.id, name: r.name, color: r.color }))
-        };
-      })
-      .filter(m => m.roles.length > 0);
-    res.json(members);
-  } catch (err) {
-    console.error('Staff error:', err.response?.data || err.message);
-    res.status(500).json({ error: 'Impossible de charger les membres. Vérifie le Server Members Intent.' });
-  }
-});
-
-app.post('/api/admin/candidature/:id/statut', (req, res) => {
-  const ok = req.session.isAdmin || req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID || req.session.user?.isAdmin || ADMIN_USER_IDS.includes(req.session.user?.id);
-  if (!ok) return res.status(403).json({ error: 'Accès refusé' });
-  const id = parseInt(req.params.id);
+app.post('/api/admin/candidature/:id/statut', async (req, res) => {
+  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
   const { statut, message } = req.body;
-  const candidatures = loadCandidatures();
-  const c = candidatures.find(c => c.id === id);
-  if (!c) return res.status(404).json({ error: 'Introuvable' });
-  c.statut = statut;
-  c.messageStatut = message || '';
-  saveCandidatures(candidatures);
+  await db.collection('candidatures').updateOne({ id: parseInt(req.params.id) }, { $set: { statut, messageStatut: message || '' } });
   res.json({ success: true });
 });
 
-app.get('/api/ma-candidature', (req, res) => {
+app.get('/api/ma-candidature', async (req, res) => {
   if (!req.session.user) return res.status(401).json({ error: 'Non connecté' });
-  const candidatures = loadCandidatures();
-  const c = candidatures.find(c => c.discordId === req.session.user.id);
+  const c = await db.collection('candidatures').findOne({ discordId: req.session.user.id });
   if (!c) return res.status(404).json({ error: 'Aucune candidature' });
   res.json({ statut: c.statut || 'en_attente', message: c.messageStatut || '', date: c.date, pseudo: c.reponses.pseudo_roblox });
 });
 
-app.delete('/api/admin/candidature/:id', (req, res) => {
-  const ok = req.session.isAdmin || req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID || req.session.user?.isAdmin || ADMIN_USER_IDS.includes(req.session.user?.id);
-  if (!ok) return res.status(403).json({ error: 'Accès refusé' });
-  const id = parseInt(req.params.id);
-  saveCandidatures(loadCandidatures().filter(c => c.id !== id));
+app.delete('/api/admin/candidature/:id', async (req, res) => {
+  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
+  await db.collection('candidatures').deleteOne({ id: parseInt(req.params.id) });
   res.json({ success: true });
 });
 
-const TICKETS_FILE = path.join(__dirname, 'tickets.json');
-const BANS_FILE = path.join(__dirname, 'bans.json');
-if (!fs.existsSync(BANS_FILE)) fs.writeFileSync(BANS_FILE, '[]');
-function loadBans() { return JSON.parse(fs.readFileSync(BANS_FILE, 'utf8')); }
-function saveBans(data) { fs.writeFileSync(BANS_FILE, JSON.stringify(data, null, 2)); }
-
-const ADMINS_FILE = path.join(__dirname, 'admins.json');
-if (!fs.existsSync(ADMINS_FILE)) fs.writeFileSync(ADMINS_FILE, '[]');
-function loadAdminsList() { return JSON.parse(fs.readFileSync(ADMINS_FILE, 'utf8')); }
-function saveAdminsList(data) { fs.writeFileSync(ADMINS_FILE, JSON.stringify(data, null, 2)); }
-
-function isStaff(req) {
-  return req.session.isAdmin || req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID || req.session.user?.isAdmin || ADMIN_USER_IDS.includes(req.session.user?.id);
-}
-
-app.get('/api/admins', (req, res) => {
-  if (req.session.user?.id !== CREATOR_USER_ID) return res.status(403).json({ error: 'Accès refusé' });
-  res.json(loadAdminsList());
-});
-
-app.get('/api/mon-ban', (req, res) => {
+// Bans
+app.get('/api/mon-ban', async (req, res) => {
   if (!req.session.user) return res.status(401).json({});
-  const ban = loadBans().find(b => b.discordId === req.session.user.id);
+  const ban = await db.collection('bans').findOne({ discordId: req.session.user.id });
   if (!ban) return res.status(404).json({});
   res.json(ban);
 });
 
-app.get('/api/bans', (req, res) => {
+app.get('/api/bans', async (req, res) => {
   if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
-  res.json(loadBans());
+  res.json(await db.collection('bans').find().toArray());
 });
 
-app.post('/api/ban', (req, res) => {
+app.post('/api/ban', async (req, res) => {
   if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
   const { discordId, discordUsername, discordAvatar, raison } = req.body;
   if (!discordId) return res.status(400).json({ error: 'ID manquant' });
-  const bans = loadBans();
-  if (bans.find(b => b.discordId === discordId)) return res.status(400).json({ error: 'Déjà banni' });
-  bans.push({ discordId, discordUsername, discordAvatar, raison: raison || '', bannePar: req.session.user?.username || 'Admin', date: new Date().toISOString() });
-  saveBans(bans);
+  const exists = await db.collection('bans').findOne({ discordId });
+  if (exists) return res.status(400).json({ error: 'Déjà banni' });
+  await db.collection('bans').insertOne({ discordId, discordUsername, discordAvatar, raison: raison || '', bannePar: req.session.user?.username || 'Admin', date: new Date().toISOString() });
   res.json({ success: true });
 });
 
-app.delete('/api/ban/:id', (req, res) => {
+app.delete('/api/ban/:id', async (req, res) => {
   if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
-  saveBans(loadBans().filter(b => b.discordId !== req.params.id));
+  await db.collection('bans').deleteOne({ discordId: req.params.id });
   res.json({ success: true });
 });
-if (!fs.existsSync(TICKETS_FILE)) fs.writeFileSync(TICKETS_FILE, '[]');
-function loadTickets() { return JSON.parse(fs.readFileSync(TICKETS_FILE, 'utf8')); }
-function saveTickets(data) { fs.writeFileSync(TICKETS_FILE, JSON.stringify(data, null, 2)); }
 
+// Admins
+app.get('/api/admins', async (req, res) => {
+  if (req.session.user?.id !== CREATOR_USER_ID) return res.status(403).json({ error: 'Accès refusé' });
+  res.json(await db.collection('admins').find().toArray());
+});
+
+// Staff Discord
+app.get('/api/staff', async (req, res) => {
+  try {
+    const membersRes = await axios.get(`https://discord.com/api/v10/guilds/${GUILD_ID}/members?limit=100`, { headers: { Authorization: `Bot ${BOT_TOKEN}` } });
+    const rolesRes = await axios.get(`https://discord.com/api/v10/guilds/${GUILD_ID}/roles`, { headers: { Authorization: `Bot ${BOT_TOKEN}` } });
+    const allRoles = rolesRes.data;
+    const members = membersRes.data
+      .filter(m => !m.user.bot && m.roles.length > 0)
+      .map(m => {
+        const memberRoles = m.roles.map(rid => allRoles.find(r => r.id === rid)).filter(r => r && r.name !== '@everyone').sort((a, b) => b.position - a.position);
+        return { id: m.user.id, username: m.nick || m.user.global_name || m.user.username, avatar: m.user.avatar ? `https://cdn.discordapp.com/avatars/${m.user.id}/${m.user.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/0.png`, roles: memberRoles.map(r => ({ id: r.id, name: r.name, color: r.color })) };
+      }).filter(m => m.roles.length > 0);
+    res.json(members);
+  } catch (err) {
+    res.status(500).json({ error: 'Impossible de charger les membres.' });
+  }
+});
+
+// Tickets
 app.post('/api/ticket', async (req, res) => {
   if (!req.session.user) return res.status(401).json({ error: 'Non connecté' });
   const { categorie, sujet, description } = req.body;
   if (!categorie || !sujet || !description) return res.status(400).json({ error: 'Champs manquants' });
-  const ticket = {
-    id: Date.now(),
-    discordId: req.session.user.id,
-    discordUsername: req.session.user.username,
-    discordAvatar: req.session.user.avatar,
-    categorie, sujet, description,
-    statut: 'ouvert',
-    date: new Date().toISOString(),
-    reponses: []
-  };
-  const tickets = loadTickets();
-  tickets.push(ticket);
-  saveTickets(tickets);
+  const ticket = { id: Date.now(), discordId: req.session.user.id, discordUsername: req.session.user.username, discordAvatar: req.session.user.avatar, categorie, sujet, description, statut: 'ouvert', date: new Date().toISOString(), reponses: [] };
+  await db.collection('tickets').insertOne(ticket);
   try {
-    await axios.post(WEBHOOK_URL, { embeds: [{ title: '🎫 Nouveau ticket', color: 0x3b82f6,
-      fields: [
-        { name: '👤 Utilisateur', value: ticket.discordUsername, inline: true },
-        { name: '📂 Catégorie', value: ticket.categorie, inline: true },
-        { name: '📝 Sujet', value: ticket.sujet },
-        { name: '💬 Description', value: ticket.description.slice(0, 300) }
-      ], footer: { text: 'Vax RP — Tickets' }, timestamp: ticket.date }] });
+    await axios.post(WEBHOOK_URL, { embeds: [{ title: '🎫 Nouveau ticket', color: 0x3b82f6, fields: [{ name: '👤 Utilisateur', value: ticket.discordUsername, inline: true }, { name: '📂 Catégorie', value: ticket.categorie, inline: true }, { name: '📝 Sujet', value: ticket.sujet }, { name: '💬 Description', value: ticket.description.slice(0, 300) }], footer: { text: 'Vax RP — Tickets' }, timestamp: ticket.date }] });
   } catch {}
   res.json({ success: true, id: ticket.id });
 });
 
-app.get('/api/mes-tickets', (req, res) => {
+app.get('/api/mes-tickets', async (req, res) => {
   if (!req.session.user) return res.status(401).json({ error: 'Non connecté' });
-  res.json(loadTickets().filter(t => t.discordId === req.session.user.id));
+  res.json(await db.collection('tickets').find({ discordId: req.session.user.id }).toArray());
 });
 
-app.get('/api/admin/tickets', (req, res) => {
+app.get('/api/admin/tickets', async (req, res) => {
   if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
-  res.json(loadTickets());
+  res.json(await db.collection('tickets').find().toArray());
 });
 
 app.post('/api/ticket/:id/message', async (req, res) => {
   if (!req.session.user) return res.status(401).json({ error: 'Non connecté' });
-  const tickets = loadTickets();
-  const t = tickets.find(t => t.id === parseInt(req.params.id));
-  if (!t) return res.status(404).json({ error: 'Introuvable' });
-  if (t.discordId !== req.session.user.id) return res.status(403).json({ error: 'Accès refusé' });
-  if (t.statut === 'ferme') return res.status(400).json({ error: 'Ticket fermé' });
-  t.reponses.push({
-    message: req.body.message,
-    date: new Date().toISOString(),
-    staff: req.session.user.username,
-    avatar: req.session.user.avatar || '',
-    roleName: req.session.user.roleName || 'Membre',
-    roleColor: req.session.user.roleColor || '#8b949e',
-    isUser: true
-  });
-  saveTickets(tickets);
+  const ticket = await db.collection('tickets').findOne({ id: parseInt(req.params.id) });
+  if (!ticket) return res.status(404).json({ error: 'Introuvable' });
+  if (ticket.discordId !== req.session.user.id) return res.status(403).json({ error: 'Accès refusé' });
+  if (ticket.statut === 'ferme') return res.status(400).json({ error: 'Ticket fermé' });
+  await db.collection('tickets').updateOne({ id: parseInt(req.params.id) }, { $push: { reponses: { message: req.body.message, date: new Date().toISOString(), staff: req.session.user.username, avatar: req.session.user.avatar || '', roleName: req.session.user.roleName || 'Membre', roleColor: req.session.user.roleColor || '#8b949e', isUser: true } } });
   res.json({ success: true });
 });
 
-app.post('/api/admin/ticket/:id/repondre', (req, res) => {
+app.post('/api/admin/ticket/:id/repondre', async (req, res) => {
   if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
-  const tickets = loadTickets();
-  const t = tickets.find(t => t.id === parseInt(req.params.id));
-  if (!t) return res.status(404).json({ error: 'Introuvable' });
-  t.reponses.push({
-    message: req.body.message,
-    date: new Date().toISOString(),
-    staff: req.session.user?.username || 'Admin',
-    avatar: req.session.user?.avatar || '',
-    roleName: req.session.user?.roleName || 'Staff',
-    roleColor: req.session.user?.roleColor || '#8b949e',
-    isUser: false
-  });
-  t.statut = req.body.statut || t.statut;
-  saveTickets(tickets);
+  await db.collection('tickets').updateOne({ id: parseInt(req.params.id) }, { $push: { reponses: { message: req.body.message, date: new Date().toISOString(), staff: req.session.user?.username || 'Admin', avatar: req.session.user?.avatar || '', roleName: req.session.user?.roleName || 'Staff', roleColor: req.session.user?.roleColor || '#8b949e', isUser: false } }, $set: { statut: req.body.statut || 'ouvert' } });
   res.json({ success: true });
 });
 
