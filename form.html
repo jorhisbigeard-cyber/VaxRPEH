@@ -205,11 +205,11 @@ fetch('/api/me').then(r => r.json()).then(user => {
   const sb = document.getElementById('nav-special-badge');
   if (user.isCreator) {
     sb.className = 'badge-owner';
-    sb.innerHTML = '&#x1F451;';
+    sb.textContent = String.fromCodePoint(0x1F451);
     sb.style.display = 'inline-flex';
   } else if (user.isAdmin) {
     sb.className = 'badge-admin';
-    sb.innerHTML = '&#x1F6E1;';
+    sb.textContent = String.fromCodePoint(0x1F6E1);
     sb.style.display = 'inline-flex';
   }
 }).catch(() => location.href = '/');
