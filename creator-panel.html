@@ -1,9 +1,9 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel CrÃ©ateur â€” Vax RP</title>
+  <title>Panel Créateur — Vax RP</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     .creator-panel { max-width: 1100px; margin: 0 auto; padding: 6rem 1.5rem 2rem; }
@@ -32,17 +32,17 @@
   <div class="nav-links">
     <a href="index.html">Accueil</a>
     <a href="staff.html">Staff</a>
-    <a href="about.html">Ã€ propos</a>
+    <a href="about.html">À propos</a>
     <a href="reponse.html">&#128236; R&#233;ponses</a>
     <a href="ticket.html">&#127915; Tickets</a>
-    <a href="creator.html">CrÃ©ateur</a>
+    <a href="creator.html">Créateur</a>
     <div class="nav-dropdown">
-      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">ğŸ›¡ï¸ Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">??? Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="nav-dropdown-menu">
-        <a href="admin.html">ğŸ” Panel Admin</a>
-        <a href="creator-panel.html">ğŸ‘‘ Panel CrÃ©ateur</a>
+        <a href="admin.html">?? Panel Admin</a>
+        <a href="creator-panel.html">?? Panel Créateur</a>
         <div class="divider"></div>
-        <a href="form.html">ğŸ“‹ Candidature</a>
+        <a href="form.html">?? Candidature</a>
       </div>
     </div>
   </div>
@@ -54,7 +54,7 @@
         <span id="nav-role-badge" class="nav-role" style="display:none"></span>
         <span id="nav-special-badge" style="display:none"></span>
       </div>
-      <button class="btn-logout" onclick="location.href='/auth/logout'">DÃ©co</button>
+      <button class="btn-logout" onclick="location.href='/auth/logout'">Déco</button>
     </div>
     <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:0.3rem"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
@@ -69,40 +69,40 @@
 <div class="nav-mobile-menu" id="mobile-menu">
   <a href="index.html">Accueil</a>
   <a href="staff.html">Staff</a>
-  <a href="about.html">Ã€ propos</a>
-  <a href="reponse.html">ğŸ“¬ RÃ©ponses</a>
-  <a href="ticket.html">ğŸ« Tickets</a>
-  <a href="creator.html">CrÃ©ateur</a>
+  <a href="about.html">À propos</a>
+  <a href="reponse.html">?? Réponses</a>
+  <a href="ticket.html">?? Tickets</a>
+  <a href="creator.html">Créateur</a>
   <div class="nav-mobile-divider"></div>
-  <a href="admin.html">ğŸ” Panel Admin</a>
-  <a href="creator-panel.html">ğŸ‘‘ Panel CrÃ©ateur</a>
+  <a href="admin.html">?? Panel Admin</a>
+  <a href="creator-panel.html">?? Panel Créateur</a>
   <a href="form.html" class="nav-cta">Candidature</a>
 </div>
 
-<!-- Ã‰CRAN CODE -->
+<!-- ÉCRAN CODE -->
 <div class="admin-login" id="code-screen">
-  <div style="font-size:3rem">ğŸ‘‘</div>
-  <h2>Panel CrÃ©ateur</h2>
-  <p>Entre le code d'accÃ¨s crÃ©ateur</p>
-  <input type="password" id="creator-code-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" onkeydown="if(event.key==='Enter')checkCode()" />
-  <button class="btn-admin" onclick="checkCode()">AccÃ©der</button>
+  <div style="font-size:3rem">??</div>
+  <h2>Panel Créateur</h2>
+  <p>Entre le code d'accès créateur</p>
+  <input type="password" id="creator-code-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkCode()" />
+  <button class="btn-admin" onclick="checkCode()">Accéder</button>
   <div id="code-error" style="color:var(--danger);font-size:0.85rem;display:none">Code incorrect.</div>
 </div>
 
-<!-- ACCÃˆS REFUSÃ‰ -->
+<!-- ACCÈS REFUSÉ -->
 <div class="access-denied" id="access-denied" style="display:none">
-  <div class="icon">ğŸ”’</div>
-  <h2>AccÃ¨s refusÃ©</h2>
-  <p>Tu n'as pas le rÃ´le CrÃ©ateur pour accÃ©der Ã  ce panel.</p>
-  <a href="index.html" class="btn-primary">Retour Ã  l'accueil</a>
+  <div class="icon">??</div>
+  <h2>Accès refusé</h2>
+  <p>Tu n'as pas le rôle Créateur pour accéder à ce panel.</p>
+  <a href="index.html" class="btn-primary">Retour à l'accueil</a>
 </div>
 
 <!-- PANEL -->
 <div class="creator-panel" id="creator-panel" style="display:none">
   <div class="panel-header">
     <div>
-      <h1>ğŸ‘‘ Panel CrÃ©ateur</h1>
-      <span class="creator-badge">Jorhis â€” Fondateur</span>
+      <h1>?? Panel Créateur</h1>
+      <span class="creator-badge">Jorhis — Fondateur</span>
     </div>
     <div style="display:flex;gap:0.75rem">
       <a href="admin.html" class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem">Panel Admin</a>
@@ -112,29 +112,29 @@
 
   <!-- TABS -->
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('candidatures')">ğŸ“‹ Candidatures</div>
-    <div class="tab" onclick="switchTab('reponses')">ğŸ“¬ RÃ©ponses</div>
-    <div class="tab" onclick="switchTab('tickets')">ğŸ« Tickets</div>
-    <div class="tab" onclick="switchTab('bans')">ğŸ”¨ Bans</div>
-    <div class="tab" onclick="switchTab('admins')">ğŸ‘® Admins</div>
-    <div class="tab" onclick="switchTab('stats')">ğŸ“Š Statistiques</div>
+    <div class="tab active" onclick="switchTab('candidatures')">?? Candidatures</div>
+    <div class="tab" onclick="switchTab('reponses')">?? Réponses</div>
+    <div class="tab" onclick="switchTab('tickets')">?? Tickets</div>
+    <div class="tab" onclick="switchTab('bans')">?? Bans</div>
+    <div class="tab" onclick="switchTab('admins')">?? Admins</div>
+    <div class="tab" onclick="switchTab('stats')">?? Statistiques</div>
   </div>
 
   <!-- TAB CANDIDATURES -->
   <div class="tab-content active" id="tab-candidatures">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
       <span class="admin-count" id="creator-count">0 candidature(s)</span>
-      <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="loadCandidatures()">ğŸ”„ Actualiser</button>
+      <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="loadCandidatures()">?? Actualiser</button>
     </div>
     <div id="candidatures-list"></div>
   </div>
 
-  <!-- TAB RÃ‰PONSES -->
+  <!-- TAB RÉPONSES -->
   <div class="tab-content" id="tab-reponses">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem">
-      <div class="stat-card" style="border-color:rgba(63,185,80,0.4)"><div class="num" id="rep-accepte" style="color:var(--success)">â€”</div><div class="lbl">âœ… AcceptÃ©es</div></div>
-      <div class="stat-card" style="border-color:rgba(248,81,73,0.4)"><div class="num" id="rep-refuse" style="color:var(--danger)">â€”</div><div class="lbl">âŒ RefusÃ©es</div></div>
-      <div class="stat-card"><div class="num" id="rep-attente">â€”</div><div class="lbl">â³ En attente</div></div>
+      <div class="stat-card" style="border-color:rgba(63,185,80,0.4)"><div class="num" id="rep-accepte" style="color:var(--success)">—</div><div class="lbl">? Acceptées</div></div>
+      <div class="stat-card" style="border-color:rgba(248,81,73,0.4)"><div class="num" id="rep-refuse" style="color:var(--danger)">—</div><div class="lbl">? Refusées</div></div>
+      <div class="stat-card"><div class="num" id="rep-attente">—</div><div class="lbl">? En attente</div></div>
     </div>
     <div id="reponses-list"></div>
   </div>
@@ -143,7 +143,7 @@
   <div class="tab-content" id="tab-tickets">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
       <span class="admin-count" id="tickets-count">0 ticket(s)</span>
-      <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="loadTicketsPanel()">ğŸ”„ Actualiser</button>
+      <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="loadTicketsPanel()">?? Actualiser</button>
     </div>
     <div id="tickets-panel-list"></div>
   </div>
@@ -155,7 +155,7 @@
       <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
         <input id="ban-id-input" placeholder="Discord ID" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;color:var(--text);font-size:0.85rem;width:180px" />
         <input id="ban-reason-input" placeholder="Raison" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;color:var(--text);font-size:0.85rem;width:180px" />
-        <button class="btn-refuse" onclick="banUser()">ğŸ”¨ Bannir</button>
+        <button class="btn-refuse" onclick="banUser()">?? Bannir</button>
       </div>
     </div>
     <div id="bans-list"></div>
@@ -170,9 +170,9 @@
   <!-- TAB STATS -->
   <div class="tab-content" id="tab-stats">
     <div class="stat-cards" id="stat-cards">
-      <div class="stat-card"><div class="num" id="stat-total">â€”</div><div class="lbl">Candidatures totales</div></div>
-      <div class="stat-card"><div class="num" id="stat-today">â€”</div><div class="lbl">Aujourd'hui</div></div>
-      <div class="stat-card"><div class="num" id="stat-week">â€”</div><div class="lbl">Cette semaine</div></div>
+      <div class="stat-card"><div class="num" id="stat-total">—</div><div class="lbl">Candidatures totales</div></div>
+      <div class="stat-card"><div class="num" id="stat-today">—</div><div class="lbl">Aujourd'hui</div></div>
+      <div class="stat-card"><div class="num" id="stat-week">—</div><div class="lbl">Cette semaine</div></div>
     </div>
     <div id="recent-list"></div>
   </div>
@@ -182,12 +182,12 @@
 
 <script>
 const QUESTIONS = {
-  pseudo_roblox:'Pseudo Roblox', age:'Ã‚ge', temps_jeu:'Temps de jeu', heures_semaine:'Heures/semaine',
-  experience_staff:'ExpÃ©rience staff', connaissance_rp:'Connaissance RP (1-10)', motivation:'Motivation',
-  regle_insulte:'RÃ©action insulte', regle_triche:'RÃ©action triche', regle_dispute:'RÃ©action dispute', regle_ami:'RÃ©action ami fautif',
-  situation_failrp:'Fail RP', situation_spam:'Spam', situation_refus:'Refus aprÃ¨s avertissement',
-  comportement_calme:'Rester calme', comportement_impartial:'ImpartialitÃ©', comportement_decisions:'Expliquer dÃ©cisions',
-  actif_discord:'ActivitÃ© Discord', pourquoi_toi:'Pourquoi toi ?', ajout:'Ajout libre'
+  pseudo_roblox:'Pseudo Roblox', age:'Âge', temps_jeu:'Temps de jeu', heures_semaine:'Heures/semaine',
+  experience_staff:'Expérience staff', connaissance_rp:'Connaissance RP (1-10)', motivation:'Motivation',
+  regle_insulte:'Réaction insulte', regle_triche:'Réaction triche', regle_dispute:'Réaction dispute', regle_ami:'Réaction ami fautif',
+  situation_failrp:'Fail RP', situation_spam:'Spam', situation_refus:'Refus après avertissement',
+  comportement_calme:'Rester calme', comportement_impartial:'Impartialité', comportement_decisions:'Expliquer décisions',
+  actif_discord:'Activité Discord', pourquoi_toi:'Pourquoi toi ?', ajout:'Ajout libre'
 };
 
 function showToast(msg, type='success') {
@@ -214,7 +214,7 @@ async function loadTicketsPanel() {
   if (!res.ok) return;
   const data = await res.json();
   document.getElementById('tickets-count').textContent = `${data.length} ticket(s)`;
-  const statutLabel = { ouvert:'ğŸ”µ Ouvert', resolu:'âœ… RÃ©solu', ferme:'ğŸ”’ FermÃ©' };
+  const statutLabel = { ouvert:'?? Ouvert', resolu:'? Résolu', ferme:'?? Fermé' };
   if (!data.length) { document.getElementById('tickets-panel-list').innerHTML = '<div class="empty-state"><p>Aucun ticket.</p></div>'; return; }
   document.getElementById('tickets-panel-list').innerHTML = data.map(t => {
     const date = new Date(t.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
@@ -222,7 +222,7 @@ async function loadTicketsPanel() {
     const repHtml = t.reponses?.map(r => {
       const isUser = r.isUser;
       const roleHtml = r.roleName ? `<span style="font-size:0.68rem;padding:0.1rem 0.4rem;border-radius:8px;font-weight:600;border:1px solid;color:${r.roleColor||'#8b949e'};border-color:${(r.roleColor||'#8b949e')}66;background:${(r.roleColor||'#8b949e')}22">${escHtml(r.roleName)}</span>` : '';
-      const avatarHtml = r.avatar ? `<img src="${escHtml(r.avatar)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="" />` : (isUser?'ğŸ‘¤':'ğŸ›¡ï¸');
+      const avatarHtml = r.avatar ? `<img src="${escHtml(r.avatar)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="" />` : (isUser?'??':'???');
       return `<div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;${isUser?'flex-direction:row-reverse':''}">
         <div style="width:28px;height:28px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;overflow:hidden">${avatarHtml}</div>
         <div style="max-width:70%">
@@ -237,7 +237,7 @@ async function loadTicketsPanel() {
           <img src="${escHtml(t.discordAvatar)}" alt="avatar" style="width:38px;height:38px;border-radius:50%" />
           <div class="card-user-info">
             <strong>${escHtml(t.discordUsername)}</strong>
-            <span>${escHtml(t.categorie)} Â· ${date}</span>
+            <span>${escHtml(t.categorie)} · ${date}</span>
           </div>
         </div>
         <div class="card-actions">
@@ -250,11 +250,11 @@ async function loadTicketsPanel() {
         <div class="qa-item" style="margin-top:0.5rem"><div class="q">Description</div><div class="a">${escHtml(t.description)}</div></div>
         ${repHtml}
         <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem">
-          <textarea id="rep-${t.id}" placeholder="RÃ©pondre au ticket..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.7rem;color:var(--text);font-family:inherit;resize:vertical;min-height:80px"></textarea>
+          <textarea id="rep-${t.id}" placeholder="Répondre au ticket..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.7rem;color:var(--text);font-family:inherit;resize:vertical;min-height:80px"></textarea>
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-            <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="repondreTicket(${t.id},'ouvert')">ğŸ’¬ RÃ©pondre</button>
-            <button class="btn-accept" onclick="repondreTicket(${t.id},'resolu')">âœ… RÃ©solu</button>
-            <button class="btn-refuse" onclick="repondreTicket(${t.id},'ferme')">ğŸ”’ Fermer</button>
+            <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="repondreTicket(${t.id},'ouvert')">?? Répondre</button>
+            <button class="btn-accept" onclick="repondreTicket(${t.id},'resolu')">? Résolu</button>
+            <button class="btn-refuse" onclick="repondreTicket(${t.id},'ferme')">?? Fermer</button>
           </div>
         </div>
       </div>
@@ -269,12 +269,12 @@ function toggleTicket(id) {
 
 async function repondreTicket(id, statut) {
   const msg = document.getElementById(`rep-${id}`).value.trim();
-  if (!msg && statut === 'ouvert') { showToast('Ã‰cris un message.', 'error'); return; }
+  if (!msg && statut === 'ouvert') { showToast('Écris un message.', 'error'); return; }
   const res = await fetch(`/api/admin/ticket/${id}/repondre`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: msg, statut })
   });
-  if (res.ok) { showToast('RÃ©ponse envoyÃ©e !'); loadTicketsPanel(); }
+  if (res.ok) { showToast('Réponse envoyée !'); loadTicketsPanel(); }
   else showToast('Erreur.', 'error');
 }
 
@@ -292,11 +292,11 @@ async function loadBans() {
           <img src="${escHtml(b.discordAvatar||'https://cdn.discordapp.com/embed/avatars/0.png')}" alt="avatar" style="width:38px;height:38px;border-radius:50%" />
           <div class="card-user-info">
             <strong>${escHtml(b.discordUsername||b.discordId)}</strong>
-            <span>ID : ${escHtml(b.discordId)} Â· Banni par ${escHtml(b.bannePar)} Â· ${date}</span>
+            <span>ID : ${escHtml(b.discordId)} · Banni par ${escHtml(b.bannePar)} · ${date}</span>
             ${b.raison ? `<span style="color:var(--danger);font-size:0.8rem">Raison : ${escHtml(b.raison)}</span>` : ''}
           </div>
         </div>
-        <button class="btn-accept" onclick="debanUser('${escHtml(b.discordId)}')">âœ… DÃ©bannir</button>
+        <button class="btn-accept" onclick="debanUser('${escHtml(b.discordId)}')">? Débannir</button>
       </div>
     </div>`;
   }).join('');
@@ -316,9 +316,9 @@ async function banUser() {
 }
 
 async function debanUser(id) {
-  if (!confirm('DÃ©bannir cet utilisateur ?')) return;
+  if (!confirm('Débannir cet utilisateur ?')) return;
   const res = await fetch(`/api/ban/${id}`, { method: 'DELETE' });
-  if (res.ok) { showToast('Utilisateur dÃ©banni.'); loadBans(); }
+  if (res.ok) { showToast('Utilisateur débanni.'); loadBans(); }
 }
 
 async function loadReponses() {
@@ -333,21 +333,21 @@ async function loadReponses() {
   document.getElementById('rep-attente').textContent = attente.length;
   const html = data.map(c => {
     const s = c.statut || 'en_attente';
-    const label = s === 'accepte' ? 'âœ… AcceptÃ©' : s === 'refuse' ? 'âŒ RefusÃ©' : 'â³ En attente';
+    const label = s === 'accepte' ? '? Accepté' : s === 'refuse' ? '? Refusé' : '? En attente';
     return `<div class="candidature-card" style="margin-bottom:0.75rem">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem">
         <div class="card-user">
           <img src="${escHtml(c.discordAvatar)}" alt="avatar" style="width:38px;height:38px;border-radius:50%" />
           <div class="card-user-info">
             <strong>${escHtml(c.discordUsername)}</strong>
-            <span>Roblox : ${escHtml(c.reponses.pseudo_roblox||'â€”')}</span>
+            <span>Roblox : ${escHtml(c.reponses.pseudo_roblox||'—')}</span>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:0.75rem">
           <span class="statut-badge statut-${s}">${label}</span>
           ${c.messageStatut ? `<span style="font-size:0.8rem;color:var(--text-muted)">"${escHtml(c.messageStatut)}"</span>` : ''}
-          <button class="btn-accept" onclick="changerStatut(${c.id},'accepte')">âœ…</button>
-          <button class="btn-refuse" onclick="changerStatut(${c.id},'refuse')">âŒ</button>
+          <button class="btn-accept" onclick="changerStatut(${c.id},'accepte')">?</button>
+          <button class="btn-refuse" onclick="changerStatut(${c.id},'refuse')">?</button>
         </div>
       </div>
     </div>`;
@@ -361,7 +361,7 @@ async function changerStatut(id, statut) {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ statut, message })
   });
-  if (res.ok) { showToast(statut === 'accepte' ? 'âœ… AcceptÃ©e !' : 'âŒ RefusÃ©e.'); loadReponses(); }
+  if (res.ok) { showToast(statut === 'accepte' ? '? Acceptée !' : '? Refusée.'); loadReponses(); }
 }
 
 async function loadCandidatures() {
@@ -396,14 +396,14 @@ async function loadCandidatures() {
             <img src="${escHtml(c.discordAvatar)}" alt="avatar" style="width:38px;height:38px;border-radius:50%" />
             <div class="card-user-info">
               <strong>${escHtml(c.discordUsername)}</strong>
-              <span>Roblox : ${escHtml(c.reponses.pseudo_roblox||'â€”')} Â· ${date}</span>
+              <span>Roblox : ${escHtml(c.reponses.pseudo_roblox||'—')} · ${date}</span>
             </div>
           </div>
           <div class="card-actions">
-            <button class="btn-accept" onclick="setStatut(event,${c.id},'accepte')">âœ… Accepter</button>
-            <button class="btn-refuse" onclick="setStatut(event,${c.id},'refuse')">âŒ Refuser</button>
-            <button class="btn-delete" style="border-color:var(--danger);color:var(--danger)" onclick="banFromCard(event,'${c.discordId}','${c.discordUsername}','${c.discordAvatar}')">ğŸ”¨</button>
-            <button class="btn-delete" onclick="deleteCandidature(event,${c.id})">ğŸ—‘ï¸</button>
+            <button class="btn-accept" onclick="setStatut(event,${c.id},'accepte')">? Accepter</button>
+            <button class="btn-refuse" onclick="setStatut(event,${c.id},'refuse')">? Refuser</button>
+            <button class="btn-delete" style="border-color:var(--danger);color:var(--danger)" onclick="banFromCard(event,'${c.discordId}','${c.discordUsername}','${c.discordAvatar}')">??</button>
+            <button class="btn-delete" onclick="deleteCandidature(event,${c.id})">???</button>
             <svg class="chevron" id="chev-${c.id}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </div>
         </div>
@@ -425,7 +425,7 @@ async function banFromCard(e, id, username, avatar) {
     body: JSON.stringify({ discordId: id, discordUsername: username, discordAvatar: avatar, raison })
   });
   const j = await res.json();
-  if (res.ok) showToast(`ğŸ”¨ ${username} banni !`);
+  if (res.ok) showToast(`?? ${username} banni !`);
   else showToast(j.error || 'Erreur.', 'error');
 }
 
@@ -437,7 +437,7 @@ async function setStatut(e, id, statut) {
     body: JSON.stringify({ statut, message })
   });
   if (res.ok) {
-    showToast(statut === 'accepte' ? 'âœ… Candidature acceptÃ©e !' : 'âŒ Candidature refusÃ©e.', statut === 'accepte' ? 'success' : 'error');
+    showToast(statut === 'accepte' ? '? Candidature acceptée !' : '? Candidature refusée.', statut === 'accepte' ? 'success' : 'error');
     loadCandidatures();
   }
 }
@@ -448,12 +448,12 @@ async function deleteCandidature(e, id) {
   const res = await fetch(`/api/creator/candidature/${id}`, { method: 'DELETE' });
   if (res.ok) {
     document.getElementById(`cc-${id}`).remove();
-    showToast('Candidature supprimÃ©e.');
+    showToast('Candidature supprimée.');
     loadCandidatures();
   } else showToast('Erreur.', 'error');
 }
 
-// VÃ©rifie accÃ¨s crÃ©ateur
+// Vérifie accès créateur
 fetch('/api/creator/check').then(r => {
   if (r.ok) {
     document.getElementById('code-screen').style.display = 'none';
@@ -498,11 +498,11 @@ fetch('/api/me').then(r => r.json()).then(user => {
   const sb = document.getElementById('nav-special-badge');
   if (user.isCreator) {
     sb.className = 'badge-owner';
-    sb.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M2 19l3-10 5 5 2-8 2 8 5-5 3 10H2z"/></svg> Owner`;
+    sb.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 19l3-10 5 5 2-8 2 8 5-5 3 10H2z"/></svg>`;
     sb.style.display = 'inline-flex';
   } else if (user.isAdmin) {
     sb.className = 'badge-admin';
-    sb.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6l-8-4z"/></svg> Admin`;
+    sb.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6l-8-4z"/></svg>`;
     sb.style.display = 'inline-flex';
   }
 }).catch(() => {});
