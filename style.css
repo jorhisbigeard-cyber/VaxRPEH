@@ -209,7 +209,7 @@ footer span { color: var(--accent2); }
   .admin-container { padding: 5rem 1rem 2rem; }
 
   .card-header { flex-wrap: wrap; gap: 0.5rem; }
-  .card-actions { flex-wrap: wrap; gap: 0.4rem; }
+  .card-actions { flex-wrap: wrap; gap: 0.4rem; width: 100%; }
 
   .cta-section { margin: 0 1rem 3rem; padding: 2.5rem 1rem; }
   .cta-section h2 { font-size: 1.5rem; }
@@ -217,6 +217,41 @@ footer span { color: var(--accent2); }
   .toast { left: 1rem; right: 1rem; bottom: 1rem; }
 
   .admin-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .admin-header > div { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+  /* Tabs scrollables sur mobile */
+  .tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 0; -webkit-overflow-scrolling: touch; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { white-space: nowrap; flex-shrink: 0; font-size: 0.82rem; padding: 0.5rem 0.9rem; }
+
+  /* Creator panel */
+  .creator-panel { padding: 5rem 1rem 2rem; }
+  .panel-header { flex-direction: column; align-items: flex-start; }
+  .stat-cards { grid-template-columns: 1fr 1fr; }
+
+  /* Ban inputs */
+  #tab-bans > div:first-child { flex-direction: column; align-items: flex-start; }
+  #tab-bans > div:first-child > div { width: 100%; }
+  #ban-id-input, #ban-reason-input { width: 100% !important; }
+
+  /* Ticket chat */
+  .chat-input { flex-direction: column; }
+  .chat-input button { align-self: flex-end; width: 100%; }
+  .bubble-content { max-width: 90%; }
+  .ticket-header { flex-wrap: wrap; gap: 0.5rem; }
+  .ticket-header > div:last-child { flex-shrink: 0; }
+
+  /* Mes tickets page */
+  .ticket-card .ticket-body { padding: 1rem; }
+  .bubble-msg { font-size: 0.85rem; }
+  .bubble-avatar { width: 26px; height: 26px; font-size: 0.7rem; }
+
+  /* Form ticket */
+  .form-container { padding: 5rem 1rem 3rem; }
+  .form-header h1 { font-size: 1.4rem; }
+
+  /* Admin login input */
+  .admin-login input { width: 100%; max-width: 280px; }
 }
 
 /* DROPDOWN PANELS */

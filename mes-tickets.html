@@ -68,7 +68,22 @@
     </a>
     <a href="ticket.html" class="nav-cta">+ Ticket</a>
   </div>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="index.html">Accueil</a>
+  <a href="staff.html">Staff</a>
+  <a href="about.html">À propos</a>
+  <a href="reponse.html">📬 Réponses</a>
+  <a href="creator.html">Créateur</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="admin.html">🔐 Panel Admin</a>
+  <a href="creator-panel.html">👑 Panel Créateur</a>
+  <a href="ticket.html" class="nav-cta">+ Nouveau ticket</a>
+</div>
 
 <div style="max-width:800px;margin:0 auto;padding:6rem 1.5rem 4rem">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
@@ -85,29 +100,20 @@ function toggleDropdown(btn) {
   btn.classList.toggle('open');
   btn.nextElementSibling.classList.toggle('open');
 }
+function toggleMenu() {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
 document.addEventListener('click', e => {
   if (!e.target.closest('.nav-dropdown')) {
     document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open'));
     document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open'));
   }
-});
-
-fetch('/api/me').then(r => {
-  if (!r.ok) { location.href = '/auth/discord'; return null; }
-  return r.json();
-}).then(user => {
-  if (!user) return;
-  document.getElementById('nav-user').style.display = 'flex';
-  document.getElementById('nav-avatar').src = user.avatar;
-  document.getElementById('nav-username').textContent = user.username;
-  if (user.roleName) {
-    const b = document.getElementById('nav-role-badge');
-    b.textContent = user.roleName; b.style.color = user.roleColor;
-    b.style.borderColor = user.roleColor + '66'; b.style.background = user.roleColor + '22';
-    b.style.display = 'inline';
+  if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) {
+    document.getElementById('hamburger')?.classList.remove('open');
+    document.getElementById('mobile-menu')?.classList.remove('open');
   }
-  loadTickets();
-}).catch(() => location.href = '/auth/discord');
+});
 
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 

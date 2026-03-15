@@ -40,9 +40,25 @@
       Se connecter
     </a>
     <span id="admin-badge" style="display:none;font-size:0.8rem;color:var(--text-muted)">🔐 Admin</span>
-    <button class="btn-logout" id="btn-admin-logout" style="display:none" onclick="location.reload()">Déconnexion</button>
+    <button class="btn-logout" id="btn-admin-logout" style="display:none" onclick="adminLogout()">Quitter le panel</button>
   </div>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="index.html">Accueil</a>
+  <a href="staff.html">Staff</a>
+  <a href="about.html">À propos</a>
+  <a href="reponse.html">📬 Réponses</a>
+  <a href="ticket.html">🎫 Tickets</a>
+  <a href="creator.html">Créateur</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="admin.html">🔐 Panel Admin</a>
+  <a href="creator-panel.html">👑 Panel Créateur</a>
+  <a href="form.html" class="nav-cta">Candidature</a>
+</div>
 
 <div class="admin-login" id="admin-login">
   <div style="font-size:2.5rem">🔐</div>
@@ -312,14 +328,27 @@ async function repondreTicketAdmin(id, statut) {
   else showToast('Erreur.', 'error');
 }
 
+async function adminLogout() {
+  await fetch('/api/admin/logout', { method: 'POST' });
+  location.href = '/';
+}
+
 function toggleDropdown(btn) {
   btn.classList.toggle('open');
   btn.nextElementSibling.classList.toggle('open');
+}
+function toggleMenu() {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
 }
 document.addEventListener('click', e => {
   if (!e.target.closest('.nav-dropdown')) {
     document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open'));
     document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open'));
+  }
+  if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) {
+    document.getElementById('hamburger')?.classList.remove('open');
+    document.getElementById('mobile-menu')?.classList.remove('open');
   }
 });
 fetch('/api/me').then(r => r.json()).then(user => {

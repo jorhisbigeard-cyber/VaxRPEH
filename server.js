@@ -157,6 +157,16 @@ app.post('/api/creator/login', (req, res) => {
   else res.status(403).json({ error: 'Code incorrect' });
 });
 
+app.post('/api/admin/logout', (req, res) => {
+  req.session.isAdmin = false;
+  res.json({ success: true });
+});
+
+app.post('/api/creator/logout', (req, res) => {
+  req.session.isCreatorCode = false;
+  res.json({ success: true });
+});
+
 app.get('/api/admin/candidatures', async (req, res) => {
   if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
   res.json(await db.collection('candidatures').find().toArray());
