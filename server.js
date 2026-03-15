@@ -151,6 +151,12 @@ app.post('/api/admin/login', (req, res) => {
   else res.status(403).json({ error: 'Code incorrect' });
 });
 
+app.post('/api/creator/login', (req, res) => {
+  const CREATOR_CODE = process.env.CREATOR_CODE || 'CREATOR1234';
+  if (req.body.code === CREATOR_CODE) { req.session.isCreatorCode = true; res.json({ success: true }); }
+  else res.status(403).json({ error: 'Code incorrect' });
+});
+
 app.get('/api/admin/candidatures', async (req, res) => {
   if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
   res.json(await db.collection('candidatures').find().toArray());
@@ -158,7 +164,10 @@ app.get('/api/admin/candidatures', async (req, res) => {
 
 app.get('/api/creator/check', (req, res) => {
   if (!req.session.user) return res.status(401).json({ error: 'Non connecté' });
-  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
+  const ok = req.session.isCreatorCode || isStaff(req);
+  if (!ok) return res.status(403).json({ error: 'Accès refusé' });
+  res.json({ ok: true });
+});
   res.json({ ok: true });
 });
 

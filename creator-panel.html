@@ -62,6 +62,16 @@
   </div>
 </nav>
 
+<!-- ÉCRAN CODE -->
+<div class="admin-login" id="code-screen">
+  <div style="font-size:3rem">👑</div>
+  <h2>Panel Créateur</h2>
+  <p>Entre le code d'accès créateur</p>
+  <input type="password" id="creator-code-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkCode()" />
+  <button class="btn-admin" onclick="checkCode()">Accéder</button>
+  <div id="code-error" style="color:var(--danger);font-size:0.85rem;display:none">Code incorrect.</div>
+</div>
+
 <!-- ACCÈS REFUSÉ -->
 <div class="access-denied" id="access-denied" style="display:none">
   <div class="icon">🔒</div>
@@ -428,12 +438,31 @@ async function deleteCandidature(e, id) {
 // Vérifie accès créateur
 fetch('/api/creator/check').then(r => {
   if (r.ok) {
+    document.getElementById('code-screen').style.display = 'none';
+    document.getElementById('creator-panel').style.display = 'block';
+    loadCandidatures();
+  } else if (r.status === 403) {
+    document.getElementById('code-screen').style.display = 'flex';
+  } else {
+    location.href = '/auth/discord';
+  }
+}).catch(() => location.href = '/auth/discord');
+
+async function checkCode() {
+  const code = document.getElementById('creator-code-input').value.trim();
+  const res = await fetch('/api/creator/login', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code })
+  });
+  if (res.ok) {
+    document.getElementById('code-screen').style.display = 'none';
     document.getElementById('creator-panel').style.display = 'block';
     loadCandidatures();
   } else {
-    document.getElementById('access-denied').style.display = 'flex';
+    document.getElementById('code-error').style.display = 'block';
+    document.getElementById('creator-code-input').value = '';
   }
-}).catch(() => location.href = '/auth/discord');
+}
 
 fetch('/api/me').then(r => r.json()).then(user => {
   if (!user.id) { document.getElementById('nav-login-btn').style.display = 'inline-flex'; return; }
