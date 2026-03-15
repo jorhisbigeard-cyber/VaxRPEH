@@ -52,6 +52,7 @@
       <div class="nav-user-info">
         <span id="nav-username"></span>
         <span id="nav-role-badge" class="nav-role" style="display:none"></span>
+        <span id="nav-special-badge" style="display:none"></span>
       </div>
       <button class="btn-logout" onclick="location.href='/auth/logout'">Déco</button>
     </div>
@@ -493,6 +494,16 @@ fetch('/api/me').then(r => r.json()).then(user => {
     b.style.borderColor = user.roleColor + '66';
     b.style.background = user.roleColor + '22';
     b.style.display = 'inline';
+  }
+  const sb = document.getElementById('nav-special-badge');
+  if (user.isCreator) {
+    sb.className = 'badge-owner';
+    sb.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M2 19l3-10 5 5 2-8 2 8 5-5 3 10H2z"/></svg> Owner`;
+    sb.style.display = 'inline-flex';
+  } else if (user.isAdmin) {
+    sb.className = 'badge-admin';
+    sb.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6l-8-4z"/></svg> Admin`;
+    sb.style.display = 'inline-flex';
   }
 }).catch(() => {});
 

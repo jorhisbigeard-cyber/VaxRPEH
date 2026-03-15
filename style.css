@@ -403,3 +403,20 @@ footer span { color: var(--accent2); }
 @media (min-width: 1400px) {
   .admin-container, .creator-panel { max-width: 1300px; }
 }
+
+/* BADGES OWNER / ADMIN */
+.badge-owner {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem;
+  border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  background: rgba(251,191,36,0.15); color: #fbbf24;
+  border: 1px solid rgba(251,191,36,0.5);
+}
+.badge-admin {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem;
+  border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  background: rgba(99,102,241,0.15); color: #818cf8;
+  border: 1px solid rgba(99,102,241,0.5);
+}
+.badge-owner svg, .badge-admin svg { flex-shrink: 0; }
