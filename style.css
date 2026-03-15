@@ -39,8 +39,9 @@ nav {
 .nav-cta:hover { background: var(--accent2); box-shadow: 0 0 20px var(--glow); }
 .nav-user { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; min-width: 0; }
 .nav-user img { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--accent); flex-shrink: 0; }
-.nav-user-info { display: flex; align-items: center; gap: 0.4rem; min-width: 0; }
-.nav-user-info span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100px; }
+.nav-user-info { display: flex; flex-direction: column; justify-content: center; gap: 0.15rem; min-width: 0; }
+.nav-user-info span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100px; font-size: 0.85rem; }
+.nav-user-badges { display: flex; align-items: center; gap: 0.3rem; flex-wrap: nowrap; }
 .btn-logout { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.25rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
 .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
 .nav-role { font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 10px; font-weight: 600; border: 1px solid; white-space: nowrap; flex-shrink: 0; }
