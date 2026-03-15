@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1773581315274,
+    "discordId": "1315318063989788715",
+    "discordUsername": "ussr_j._.",
+    "discordAvatar": "https://cdn.discordapp.com/avatars/1315318063989788715/a_de7a680d3cf62bf38bcaccd3f3b7e035.png",
+    "categorie": "🚨 Signalement joueur",
+    "sujet": "rvrv",
+    "description": "rvrvrvrv",
+    "statut": "ouvert",
+    "date": "2026-03-15T13:28:35.274Z",
+    "reponses": [
+      {
+        "message": "mdr",
+        "date": "2026-03-15T13:28:42.253Z",
+        "staff": "ussr_j._.",
+        "avatar": "https://cdn.discordapp.com/avatars/1315318063989788715/a_de7a680d3cf62bf38bcaccd3f3b7e035.png",
+        "roleName": "Créateur",
+        "roleColor": "#fbbf24",
+        "isUser": true
+      },
+      {
+        "message": "salut",
+        "date": "2026-03-15T13:28:54.717Z",
+        "staff": "ussr_j._.",
+        "avatar": "https://cdn.discordapp.com/avatars/1315318063989788715/a_de7a680d3cf62bf38bcaccd3f3b7e035.png",
+        "roleName": "Créateur",
+        "roleColor": "#fbbf24",
+        "isUser": false
+      },
+      {
+        "message": "ahh",
+        "date": "2026-03-15T13:31:41.997Z",
+        "staff": "ussr_j._.",
+        "avatar": "https://cdn.discordapp.com/avatars/1315318063989788715/a_de7a680d3cf62bf38bcaccd3f3b7e035.png",
+        "roleName": "Créateur",
+        "roleColor": "#fbbf24",
+        "isUser": false
+      }
+    ]
+  }
+]

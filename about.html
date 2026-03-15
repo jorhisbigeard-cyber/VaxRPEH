@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>À propos — Vax RP Emergency Hamburg</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .rules-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; }
+    .rule-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.25rem; display:flex; gap:0.75rem; }
+    .rule-num { background:rgba(37,99,235,0.2); color:var(--accent2); width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0; }
+    .rule-card p { color:var(--text-muted); font-size:0.88rem; line-height:1.5; }
+    .timeline { position:relative; padding-left:2rem; }
+    .timeline::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent),transparent); }
+    .timeline-item { position:relative; margin-bottom:2rem; padding-left:1.5rem; }
+    .timeline-item::before { content:''; position:absolute; left:-2.35rem; top:0.3rem; width:12px; height:12px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); }
+    .timeline-date { font-size:0.75rem; color:var(--accent2); margin-bottom:0.3rem; }
+    .timeline-item h3 { font-size:1rem; margin-bottom:0.3rem; }
+    .timeline-item p { color:var(--text-muted); font-size:0.9rem; line-height:1.6; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;" /></a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="staff.html">Staff</a>
+    <a href="about.html" class="active">À propos</a>
+    <a href="reponse.html">&#128236; R&#233;ponses</a>
+    <a href="ticket.html">&#127915; Tickets</a>
+    <a href="creator.html">Créateur</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">🛡️ Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="admin.html">🔐 Panel Admin</a>
+        <a href="creator-panel.html">👑 Panel Créateur</a>
+        <div class="divider"></div>
+        <a href="form.html">📋 Candidature</a>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem">
+    <div id="nav-user" class="nav-user" style="display:none">
+      <img id="nav-avatar" src="" alt="avatar" />
+      <div class="nav-user-info">
+        <span id="nav-username"></span>
+        <span id="nav-role-badge" class="nav-role" style="display:none"></span>
+      </div>
+      <button class="btn-logout" onclick="location.href='/auth/logout'">Déco</button>
+    </div>
+    <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:0.3rem"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Se connecter
+    </a>
+    <a href="form.html" class="nav-cta">Candidature</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">ℹ️ À propos</div>
+  <h1>Emergency Hamburg</h1>
+  <p>Tout ce que tu dois savoir sur Vax RP et notre univers roleplay.</p>
+</div>
+
+<div class="section" style="padding-top:1rem">
+  <div class="about-grid" style="margin-bottom:4rem">
+    <div class="about-text">
+      <div class="section-tag">🌆 Le projet</div>
+      <h2>Qu'est-ce que Vax RP ?</h2>
+      <p>Vax RP Emergency Hamburg est un serveur Roblox dédié au roleplay immersif. Notre objectif est de recréer l'atmosphère d'une vraie ville avec des rôles variés et des interactions réalistes.</p>
+      <p>Que tu veuilles être policier, médecin, pompier, civil ou même criminel, tu trouveras ta place dans notre communauté.</p>
+      <p>Nous mettons un point d'honneur sur le respect des règles RP pour garantir une expérience de qualité à tous les membres.</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem">
+      <div style="font-size:4rem;text-align:center;margin-bottom:1rem">🏙️</div>
+      <div style="text-align:center;font-weight:700;margin-bottom:0.5rem">Emergency Hamburg</div>
+      <div style="color:var(--text-muted);font-size:0.9rem;text-align:center;line-height:1.6;margin-bottom:1rem">Un univers RP complet sur Roblox avec des dizaines de rôles disponibles.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div style="background:var(--surface2);border-radius:8px;padding:0.75rem;text-align:center"><div style="font-size:1.3rem">🚔</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">Police</div></div>
+        <div style="background:var(--surface2);border-radius:8px;padding:0.75rem;text-align:center"><div style="font-size:1.3rem">🚑</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">SAMU</div></div>
+        <div style="background:var(--surface2);border-radius:8px;padding:0.75rem;text-align:center"><div style="font-size:1.3rem">🚒</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">Pompiers</div></div>
+        <div style="background:var(--surface2);border-radius:8px;padding:0.75rem;text-align:center"><div style="font-size:1.3rem">👤</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">Civils</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header"><div class="section-tag">📜 Règlement</div><h2>Règles principales</h2><p>Obligatoires pour tous les joueurs.</p></div>
+  <div class="rules-grid" style="margin-bottom:4rem">
+    <div class="rule-card"><div class="rule-num">1</div><p>Respecter le RP en tout temps. Pas de fail RP ou d'actions irréalistes.</p></div>
+    <div class="rule-card"><div class="rule-num">2</div><p>Interdiction d'insulter, harceler ou discriminer un autre joueur.</p></div>
+    <div class="rule-card"><div class="rule-num">3</div><p>Pas de triche, d'exploit ou de scripts non autorisés.</p></div>
+    <div class="rule-card"><div class="rule-num">4</div><p>Respecter les décisions du staff. En cas de désaccord, ouvrir un ticket.</p></div>
+    <div class="rule-card"><div class="rule-num">5</div><p>Pas de spam dans le chat. Communications dans le contexte RP uniquement.</p></div>
+    <div class="rule-card"><div class="rule-num">6</div><p>Les règles s'appliquent à tous, y compris les amis du staff.</p></div>
+  </div>
+
+  <div class="section-header"><div class="section-tag">📅 Histoire</div><h2>Notre parcours</h2></div>
+  <div class="timeline">
+    <div class="timeline-item"><div class="timeline-date">Début 2024</div><h3>Création de Vax RP</h3><p>Le projet Emergency Hamburg est lancé avec une petite équipe passionnée.</p></div>
+    <div class="timeline-item"><div class="timeline-date">Mi 2024</div><h3>Ouverture au public</h3><p>Le serveur ouvre ses portes. Les premiers membres rejoignent la communauté.</p></div>
+    <div class="timeline-item"><div class="timeline-date">Fin 2024</div><h3>Croissance</h3><p>La communauté grandit rapidement. Le staff s'agrandit pour gérer l'afflux.</p></div>
+    <div class="timeline-item"><div class="timeline-date">2025</div><h3>Aujourd'hui</h3><p>Vax RP continue d'évoluer avec de nouvelles fonctionnalités.</p></div>
+  </div>
+</div>
+
+<footer><p>© 2025 <span>Vax RP</span> — Emergency Hamburg · Fait avec ❤️ par l'équipe Vax RP</p></footer>
+<script>
+function toggleDropdown(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-dropdown')) {
+    document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open'));
+  }
+});
+fetch('/api/me').then(r => r.json()).then(user => {
+  if (!user.id) { document.getElementById('nav-login-btn').style.display = 'inline-flex'; return; }
+  document.getElementById('nav-user').style.display = 'flex';
+  document.getElementById('nav-avatar').src = user.avatar;
+  document.getElementById('nav-username').textContent = user.username;
+  if (user.roleName) {
+    const b = document.getElementById('nav-role-badge');
+    b.textContent = user.roleName;
+    b.style.color = user.roleColor;
+    b.style.borderColor = user.roleColor + '66';
+    b.style.background = user.roleColor + '22';
+    b.style.display = 'inline';
+  }
+}).catch(() => {});
+</script>
+</body>
+</html>

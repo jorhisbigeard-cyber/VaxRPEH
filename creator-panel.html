@@ -1,0 +1,465 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Créateur — Vax RP</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .creator-panel { max-width: 1100px; margin: 0 auto; padding: 6rem 1.5rem 2rem; }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .panel-header h1 { font-size: 1.5rem; }
+    .creator-badge { background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.4); color: #fbbf24; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+    .tab { padding: 0.6rem 1.2rem; border-radius: 8px 8px 0 0; cursor: pointer; font-size: 0.9rem; color: var(--text-muted); border: 1px solid transparent; border-bottom: none; transition: all 0.2s; }
+    .tab.active { background: var(--surface); border-color: var(--border); color: var(--text); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; }
+    .stat-card .num { font-size: 2rem; font-weight: 800; color: var(--accent2); }
+    .stat-card .lbl { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem; }
+    .access-denied { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 65px); text-align: center; gap: 1rem; }
+    .access-denied .icon { font-size: 4rem; }
+    .access-denied h2 { font-size: 1.5rem; }
+    .access-denied p { color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;" /></a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="staff.html">Staff</a>
+    <a href="about.html">À propos</a>
+    <a href="reponse.html">&#128236; R&#233;ponses</a>
+    <a href="ticket.html">&#127915; Tickets</a>
+    <a href="creator.html">Créateur</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">🛡️ Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="admin.html">🔐 Panel Admin</a>
+        <a href="creator-panel.html">👑 Panel Créateur</a>
+        <div class="divider"></div>
+        <a href="form.html">📋 Candidature</a>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem">
+    <div id="nav-user" class="nav-user" style="display:none">
+      <img id="nav-avatar" src="" alt="avatar" />
+      <div class="nav-user-info">
+        <span id="nav-username"></span>
+        <span id="nav-role-badge" class="nav-role" style="display:none"></span>
+      </div>
+      <button class="btn-logout" onclick="location.href='/auth/logout'">Déco</button>
+    </div>
+    <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:0.3rem"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Se connecter
+    </a>
+  </div>
+</nav>
+
+<!-- ACCÈS REFUSÉ -->
+<div class="access-denied" id="access-denied" style="display:none">
+  <div class="icon">🔒</div>
+  <h2>Accès refusé</h2>
+  <p>Tu n'as pas le rôle Créateur pour accéder à ce panel.</p>
+  <a href="index.html" class="btn-primary">Retour à l'accueil</a>
+</div>
+
+<!-- PANEL -->
+<div class="creator-panel" id="creator-panel" style="display:none">
+  <div class="panel-header">
+    <div>
+      <h1>👑 Panel Créateur</h1>
+      <span class="creator-badge">Jorhis — Fondateur</span>
+    </div>
+    <div style="display:flex;gap:0.75rem">
+      <a href="admin.html" class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem">Panel Admin</a>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('candidatures')">📋 Candidatures</div>
+    <div class="tab" onclick="switchTab('reponses')">📬 Réponses</div>
+    <div class="tab" onclick="switchTab('tickets')">🎫 Tickets</div>
+    <div class="tab" onclick="switchTab('bans')">🔨 Bans</div>
+    <div class="tab" onclick="switchTab('admins')">👮 Admins</div>
+    <div class="tab" onclick="switchTab('stats')">📊 Statistiques</div>
+  </div>
+
+  <!-- TAB CANDIDATURES -->
+  <div class="tab-content active" id="tab-candidatures">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <span class="admin-count" id="creator-count">0 candidature(s)</span>
+      <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="loadCandidatures()">🔄 Actualiser</button>
+    </div>
+    <div id="candidatures-list"></div>
+  </div>
+
+  <!-- TAB RÉPONSES -->
+  <div class="tab-content" id="tab-reponses">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem">
+      <div class="stat-card" style="border-color:rgba(63,185,80,0.4)"><div class="num" id="rep-accepte" style="color:var(--success)">—</div><div class="lbl">✅ Acceptées</div></div>
+      <div class="stat-card" style="border-color:rgba(248,81,73,0.4)"><div class="num" id="rep-refuse" style="color:var(--danger)">—</div><div class="lbl">❌ Refusées</div></div>
+      <div class="stat-card"><div class="num" id="rep-attente">—</div><div class="lbl">⏳ En attente</div></div>
+    </div>
+    <div id="reponses-list"></div>
+  </div>
+
+  <!-- TAB TICKETS -->
+  <div class="tab-content" id="tab-tickets">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <span class="admin-count" id="tickets-count">0 ticket(s)</span>
+      <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="loadTicketsPanel()">🔄 Actualiser</button>
+    </div>
+    <div id="tickets-panel-list"></div>
+  </div>
+
+  <!-- TAB BANS -->
+  <div class="tab-content" id="tab-bans">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.75rem">
+      <span class="admin-count" id="bans-count">0 banni(s)</span>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <input id="ban-id-input" placeholder="Discord ID" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;color:var(--text);font-size:0.85rem;width:180px" />
+        <input id="ban-reason-input" placeholder="Raison" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.75rem;color:var(--text);font-size:0.85rem;width:180px" />
+        <button class="btn-refuse" onclick="banUser()">🔨 Bannir</button>
+      </div>
+    </div>
+    <div id="bans-list"></div>
+  </div>
+
+  <!-- TAB ADMINS -->
+  <div class="tab-content" id="tab-admins">
+    <div style="margin-bottom:1rem"><span class="admin-count" id="admins-count">0 admin(s)</span></div>
+    <div id="admins-list"></div>
+  </div>
+
+  <!-- TAB STATS -->
+  <div class="tab-content" id="tab-stats">
+    <div class="stat-cards" id="stat-cards">
+      <div class="stat-card"><div class="num" id="stat-total">—</div><div class="lbl">Candidatures totales</div></div>
+      <div class="stat-card"><div class="num" id="stat-today">—</div><div class="lbl">Aujourd'hui</div></div>
+      <div class="stat-card"><div class="num" id="stat-week">—</div><div class="lbl">Cette semaine</div></div>
+    </div>
+    <div id="recent-list"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const QUESTIONS = {
+  pseudo_roblox:'Pseudo Roblox', age:'Âge', temps_jeu:'Temps de jeu', heures_semaine:'Heures/semaine',
+  experience_staff:'Expérience staff', connaissance_rp:'Connaissance RP (1-10)', motivation:'Motivation',
+  regle_insulte:'Réaction insulte', regle_triche:'Réaction triche', regle_dispute:'Réaction dispute', regle_ami:'Réaction ami fautif',
+  situation_failrp:'Fail RP', situation_spam:'Spam', situation_refus:'Refus après avertissement',
+  comportement_calme:'Rester calme', comportement_impartial:'Impartialité', comportement_decisions:'Expliquer décisions',
+  actif_discord:'Activité Discord', pourquoi_toi:'Pourquoi toi ?', ajout:'Ajout libre'
+};
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.className = 'toast', 3500);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['candidatures','reponses','tickets','bans','stats'][i] === name));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById(`tab-${name}`).classList.add('active');
+  if (name === 'reponses') loadReponses();
+  if (name === 'tickets') loadTicketsPanel();
+  if (name === 'bans') loadBans();
+}
+
+async function loadTicketsPanel() {
+  const res = await fetch('/api/admin/tickets');
+  if (!res.ok) return;
+  const data = await res.json();
+  document.getElementById('tickets-count').textContent = `${data.length} ticket(s)`;
+  const statutLabel = { ouvert:'🔵 Ouvert', resolu:'✅ Résolu', ferme:'🔒 Fermé' };
+  if (!data.length) { document.getElementById('tickets-panel-list').innerHTML = '<div class="empty-state"><p>Aucun ticket.</p></div>'; return; }
+  document.getElementById('tickets-panel-list').innerHTML = data.map(t => {
+    const date = new Date(t.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+    const s = t.statut || 'ouvert';
+    const repHtml = t.reponses?.map(r => {
+      const isUser = r.isUser;
+      const roleHtml = r.roleName ? `<span style="font-size:0.68rem;padding:0.1rem 0.4rem;border-radius:8px;font-weight:600;border:1px solid;color:${r.roleColor||'#8b949e'};border-color:${(r.roleColor||'#8b949e')}66;background:${(r.roleColor||'#8b949e')}22">${escHtml(r.roleName)}</span>` : '';
+      const avatarHtml = r.avatar ? `<img src="${escHtml(r.avatar)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="" />` : (isUser?'👤':'🛡️');
+      return `<div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;${isUser?'flex-direction:row-reverse':''}">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;overflow:hidden">${avatarHtml}</div>
+        <div style="max-width:70%">
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.2rem;display:flex;align-items:center;gap:0.3rem;${isUser?'justify-content:flex-end':''}">${escHtml(r.staff)} ${roleHtml}</div>
+          <div style="background:${isUser?'rgba(37,99,235,0.15)':'var(--surface2)'};border:1px solid ${isUser?'rgba(37,99,235,0.3)':'var(--border)'};border-radius:8px;padding:0.5rem 0.75rem;font-size:0.88rem;line-height:1.5">${escHtml(r.message)}</div>
+        </div>
+      </div>`;
+    }).join('') || '';
+    return `<div class="candidature-card" id="tk-${t.id}">
+      <div class="card-header" onclick="toggleTicket(${t.id})">
+        <div class="card-user">
+          <img src="${escHtml(t.discordAvatar)}" alt="avatar" style="width:38px;height:38px;border-radius:50%" />
+          <div class="card-user-info">
+            <strong>${escHtml(t.discordUsername)}</strong>
+            <span>${escHtml(t.categorie)} · ${date}</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <span class="statut-badge ticket-statut-${s}">${statutLabel[s]||s}</span>
+          <svg class="chevron" id="tchev-${t.id}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="card-body" id="tkb-${t.id}">
+        <div class="qa-item"><div class="q">Sujet</div><div class="a">${escHtml(t.sujet)}</div></div>
+        <div class="qa-item" style="margin-top:0.5rem"><div class="q">Description</div><div class="a">${escHtml(t.description)}</div></div>
+        ${repHtml}
+        <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem">
+          <textarea id="rep-${t.id}" placeholder="Répondre au ticket..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.7rem;color:var(--text);font-family:inherit;resize:vertical;min-height:80px"></textarea>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+            <button class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem" onclick="repondreTicket(${t.id},'ouvert')">💬 Répondre</button>
+            <button class="btn-accept" onclick="repondreTicket(${t.id},'resolu')">✅ Résolu</button>
+            <button class="btn-refuse" onclick="repondreTicket(${t.id},'ferme')">🔒 Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleTicket(id) {
+  document.getElementById(`tkb-${id}`).classList.toggle('open');
+  document.getElementById(`tchev-${id}`).classList.toggle('open');
+}
+
+async function repondreTicket(id, statut) {
+  const msg = document.getElementById(`rep-${id}`).value.trim();
+  if (!msg && statut === 'ouvert') { showToast('Écris un message.', 'error'); return; }
+  const res = await fetch(`/api/admin/ticket/${id}/repondre`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg, statut })
+  });
+  if (res.ok) { showToast('Réponse envoyée !'); loadTicketsPanel(); }
+  else showToast('Erreur.', 'error');
+}
+
+async function loadBans() {
+  const res = await fetch('/api/bans');
+  if (!res.ok) return;
+  const data = await res.json();
+  document.getElementById('bans-count').textContent = `${data.length} banni(s)`;
+  if (!data.length) { document.getElementById('bans-list').innerHTML = '<div class="empty-state"><p>Aucun banni.</p></div>'; return; }
+  document.getElementById('bans-list').innerHTML = data.map(b => {
+    const date = new Date(b.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+    return `<div class="candidature-card" style="margin-bottom:0.75rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;flex-wrap:wrap;gap:0.5rem">
+        <div class="card-user">
+          <img src="${escHtml(b.discordAvatar||'https://cdn.discordapp.com/embed/avatars/0.png')}" alt="avatar" style="width:38px;height:38px;border-radius:50%" />
+          <div class="card-user-info">
+            <strong>${escHtml(b.discordUsername||b.discordId)}</strong>
+            <span>ID : ${escHtml(b.discordId)} · Banni par ${escHtml(b.bannePar)} · ${date}</span>
+            ${b.raison ? `<span style="color:var(--danger);font-size:0.8rem">Raison : ${escHtml(b.raison)}</span>` : ''}
+          </div>
+        </div>
+        <button class="btn-accept" onclick="debanUser('${escHtml(b.discordId)}')">✅ Débannir</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function banUser() {
+  const id = document.getElementById('ban-id-input').value.trim();
+  const raison = document.getElementById('ban-reason-input').value.trim();
+  if (!id) { showToast('Entre un Discord ID.', 'error'); return; }
+  const res = await fetch('/api/ban', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ discordId: id, raison })
+  });
+  const j = await res.json();
+  if (res.ok) { showToast('Utilisateur banni.'); document.getElementById('ban-id-input').value = ''; document.getElementById('ban-reason-input').value = ''; loadBans(); }
+  else showToast(j.error || 'Erreur.', 'error');
+}
+
+async function debanUser(id) {
+  if (!confirm('Débannir cet utilisateur ?')) return;
+  const res = await fetch(`/api/ban/${id}`, { method: 'DELETE' });
+  if (res.ok) { showToast('Utilisateur débanni.'); loadBans(); }
+}
+
+async function loadReponses() {
+  const res = await fetch('/api/creator/candidatures');
+  if (!res.ok) return;
+  const data = await res.json();
+  const accepte = data.filter(c => c.statut === 'accepte');
+  const refuse = data.filter(c => c.statut === 'refuse');
+  const attente = data.filter(c => !c.statut || c.statut === 'en_attente');
+  document.getElementById('rep-accepte').textContent = accepte.length;
+  document.getElementById('rep-refuse').textContent = refuse.length;
+  document.getElementById('rep-attente').textContent = attente.length;
+  const html = data.map(c => {
+    const s = c.statut || 'en_attente';
+    const label = s === 'accepte' ? '✅ Accepté' : s === 'refuse' ? '❌ Refusé' : '⏳ En attente';
+    return `<div class="candidature-card" style="margin-bottom:0.75rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem">
+        <div class="card-user">
+          <img src="${escHtml(c.discordAvatar)}" alt="avatar" style="width:38px;height:38px;border-radius:50%" />
+          <div class="card-user-info">
+            <strong>${escHtml(c.discordUsername)}</strong>
+            <span>Roblox : ${escHtml(c.reponses.pseudo_roblox||'—')}</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <span class="statut-badge statut-${s}">${label}</span>
+          ${c.messageStatut ? `<span style="font-size:0.8rem;color:var(--text-muted)">"${escHtml(c.messageStatut)}"</span>` : ''}
+          <button class="btn-accept" onclick="changerStatut(${c.id},'accepte')">✅</button>
+          <button class="btn-refuse" onclick="changerStatut(${c.id},'refuse')">❌</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('reponses-list').innerHTML = html || '<div class="empty-state"><p>Aucune candidature.</p></div>';
+}
+
+async function changerStatut(id, statut) {
+  const message = statut === 'refuse' ? prompt('Raison du refus (optionnel) :') || '' : '';
+  const res = await fetch(`/api/admin/candidature/${id}/statut`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ statut, message })
+  });
+  if (res.ok) { showToast(statut === 'accepte' ? '✅ Acceptée !' : '❌ Refusée.'); loadReponses(); }
+}
+
+async function loadCandidatures() {
+  const res = await fetch('/api/creator/candidatures');
+  if (!res.ok) return;
+  const data = await res.json();
+
+  document.getElementById('creator-count').textContent = `${data.length} candidature(s)`;
+
+  // Stats
+  const now = new Date();
+  const today = data.filter(c => new Date(c.date).toDateString() === now.toDateString()).length;
+  const week = data.filter(c => (now - new Date(c.date)) < 7*24*60*60*1000).length;
+  document.getElementById('stat-total').textContent = data.length;
+  document.getElementById('stat-today').textContent = today;
+  document.getElementById('stat-week').textContent = week;
+
+  if (!data.length) {
+    document.getElementById('candidatures-list').innerHTML = `<div class="empty-state"><p>Aucune candidature.</p></div>`;
+    return;
+  }
+
+  document.getElementById('candidatures-list').innerHTML = data.map(c => {
+    const date = new Date(c.date).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const qas = Object.entries(QUESTIONS).filter(([k]) => c.reponses[k]).map(([k,label]) =>
+      `<div class="qa-item"><div class="q">${label}</div><div class="a">${escHtml(c.reponses[k])}</div></div>`
+    ).join('');
+    return `
+      <div class="candidature-card" id="cc-${c.id}">
+        <div class="card-header" onclick="toggleCard(${c.id})">
+          <div class="card-user">
+            <img src="${escHtml(c.discordAvatar)}" alt="avatar" style="width:38px;height:38px;border-radius:50%" />
+            <div class="card-user-info">
+              <strong>${escHtml(c.discordUsername)}</strong>
+              <span>Roblox : ${escHtml(c.reponses.pseudo_roblox||'—')} · ${date}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-accept" onclick="setStatut(event,${c.id},'accepte')">✅ Accepter</button>
+            <button class="btn-refuse" onclick="setStatut(event,${c.id},'refuse')">❌ Refuser</button>
+            <button class="btn-delete" style="border-color:var(--danger);color:var(--danger)" onclick="banFromCard(event,'${c.discordId}','${c.discordUsername}','${c.discordAvatar}')">🔨</button>
+            <button class="btn-delete" onclick="deleteCandidature(event,${c.id})">🗑️</button>
+            <svg class="chevron" id="chev-${c.id}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </div>
+        <div class="card-body" id="cb-${c.id}"><div class="qa-section">${qas}</div></div>
+      </div>`;
+  }).join('');
+}
+
+function toggleCard(id) {
+  document.getElementById(`cb-${id}`).classList.toggle('open');
+  document.getElementById(`chev-${id}`).classList.toggle('open');
+}
+
+async function banFromCard(e, id, username, avatar) {
+  e.stopPropagation();
+  const raison = prompt(`Raison du ban pour ${username} ?`) || '';
+  const res = await fetch('/api/ban', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ discordId: id, discordUsername: username, discordAvatar: avatar, raison })
+  });
+  const j = await res.json();
+  if (res.ok) showToast(`🔨 ${username} banni !`);
+  else showToast(j.error || 'Erreur.', 'error');
+}
+
+async function setStatut(e, id, statut) {
+  e.stopPropagation();
+  const message = statut === 'refuse' ? prompt('Raison du refus (optionnel) :') || '' : '';
+  const res = await fetch(`/api/admin/candidature/${id}/statut`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ statut, message })
+  });
+  if (res.ok) {
+    showToast(statut === 'accepte' ? '✅ Candidature acceptée !' : '❌ Candidature refusée.', statut === 'accepte' ? 'success' : 'error');
+    loadCandidatures();
+  }
+}
+
+async function deleteCandidature(e, id) {
+  e.stopPropagation();
+  if (!confirm('Supprimer cette candidature ?')) return;
+  const res = await fetch(`/api/creator/candidature/${id}`, { method: 'DELETE' });
+  if (res.ok) {
+    document.getElementById(`cc-${id}`).remove();
+    showToast('Candidature supprimée.');
+    loadCandidatures();
+  } else showToast('Erreur.', 'error');
+}
+
+// Vérifie accès créateur
+fetch('/api/creator/check').then(r => {
+  if (r.ok) {
+    document.getElementById('creator-panel').style.display = 'block';
+    loadCandidatures();
+  } else {
+    document.getElementById('access-denied').style.display = 'flex';
+  }
+}).catch(() => location.href = '/auth/discord');
+
+fetch('/api/me').then(r => r.json()).then(user => {
+  if (!user.id) { document.getElementById('nav-login-btn').style.display = 'inline-flex'; return; }
+  document.getElementById('nav-user').style.display = 'flex';
+  document.getElementById('nav-avatar').src = user.avatar;
+  document.getElementById('nav-username').textContent = user.username;
+  if (user.roleName) {
+    const b = document.getElementById('nav-role-badge');
+    b.textContent = user.roleName;
+    b.style.color = user.roleColor;
+    b.style.borderColor = user.roleColor + '66';
+    b.style.background = user.roleColor + '22';
+    b.style.display = 'inline';
+  }
+}).catch(() => {});
+
+function toggleDropdown(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-dropdown')) {
+    document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open'));
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vax RP — Emergency Hamburg</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;" /></a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Accueil</a>
+    <a href="staff.html">Staff</a>
+    <a href="about.html">À propos</a>
+    <a href="reponse.html">&#128236; R&#233;ponses</a>
+    <a href="ticket.html">&#127915; Tickets</a>
+    <a href="creator.html">Créateur</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">
+        🛡️ Panels
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="admin.html">🔐 Panel Admin</a>
+        <a href="creator-panel.html">👑 Panel Créateur</a>
+        <div class="divider"></div>
+        <a href="form.html">📋 Candidature</a>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem">
+    <div id="nav-user" class="nav-user" style="display:none">
+      <img id="nav-avatar" src="" alt="avatar" />
+      <div class="nav-user-info">
+        <span id="nav-username"></span>
+        <span id="nav-role-badge" class="nav-role" style="display:none"></span>
+      </div>
+      <button class="btn-logout" onclick="location.href='/auth/logout'">Déco</button>
+    </div>
+    <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:0.3rem"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Se connecter
+    </a>
+    <a href="form.html" class="nav-cta">Candidature</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🎮 Roblox Roleplay</div>
+    <h1><span class="vax">Vax</span> <span class="rp">RP</span><br/>Emergency Hamburg</h1>
+    <p>Le serveur Roblox RP immersif. Vis l'expérience d'une vraie ville — police, médecins, civils et bien plus encore.</p>
+    <div class="hero-btns">
+      <a href="form.html" class="btn-primary">Devenir Modérateur</a>
+      <a href="about.html" class="btn-secondary">En savoir plus</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Membres actifs</div></div>
+  <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Membres du staff</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Serveur actif</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Expérience RP</div></div>
+</div>
+
+<!-- FEATURES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">🌆 Le jeu</div>
+    <h2>Pourquoi jouer sur Vax RP ?</h2>
+    <p>Une expérience roleplay unique sur Roblox avec des règles strictes pour une immersion maximale.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">🚔</div><h3>Police & Urgences</h3><p>Rejoins la police, les pompiers ou le SAMU. Des rôles réalistes avec des procédures authentiques.</p></div>
+    <div class="feature-card"><div class="feature-icon">🏙️</div><h3>Ville immersive</h3><p>Hamburg recréée fidèlement sur Roblox. Explore chaque quartier et vis ta vie de citoyen.</p></div>
+    <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Règles RP strictes</h3><p>Un staff actif veille au respect des règles pour garantir une expérience de qualité à tous.</p></div>
+    <div class="feature-card"><div class="feature-icon">🤝</div><h3>Communauté soudée</h3><p>Une communauté bienveillante et passionnée de roleplay, toujours prête à accueillir les nouveaux.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎭</div><h3>Multiples rôles</h3><p>Civil, criminel, médecin, avocat... Des dizaines de rôles disponibles pour tous les styles de jeu.</p></div>
+    <div class="feature-card"><div class="feature-icon">📋</div><h3>Recrutement ouvert</h3><p>Tu veux aider à modérer ? Remplis notre formulaire et rejoins l'équipe staff.</p></div>
+  </div>
+</div>
+
+<!-- CTA DISCORD -->
+<div class="cta-section" id="discord-cta">
+  <h2>Rejoins l'équipe de modération</h2>
+  <p>Connecte-toi avec Discord pour accéder au formulaire de candidature modérateur.</p>
+  <a href="/auth/discord" class="btn-primary">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+    Se connecter avec Discord
+  </a>
+  <p style="margin-top:1rem;font-size:0.8rem;color:var(--text-muted)">
+    Déjà admin ? <a href="admin.html" style="color:var(--accent2)">Accès panel</a>
+  </p>
+</div>
+
+<footer>
+  <p>© 2025 <span>Vax RP</span> — Emergency Hamburg · Fait avec ❤️ par l'équipe Vax RP</p>
+</footer>
+
+<script>
+  fetch('/api/me').then(r => r.json()).then(user => {
+    if (!user.id) { document.getElementById('nav-login-btn').style.display = 'inline-flex'; return; }
+    document.getElementById('nav-user').style.display = 'flex';
+    document.getElementById('nav-avatar').src = user.avatar;
+    document.getElementById('nav-username').textContent = user.username;
+    if (user.roleName) {
+      const b = document.getElementById('nav-role-badge');
+      b.textContent = user.roleName;
+      b.style.color = user.roleColor;
+      b.style.borderColor = user.roleColor + '66';
+      b.style.background = user.roleColor + '22';
+      b.style.display = 'inline';
+    }
+    document.getElementById('discord-cta').innerHTML = `
+      <h2>Bienvenue, ${user.username} !</h2>
+      <p>Tu es connecté. Tu peux accéder au formulaire de candidature.</p>
+      <a href="form.html" class="btn-primary">Accéder au formulaire 📋</a>`;
+  }).catch(() => {});
+
+  function toggleDropdown(btn) {
+    btn.classList.toggle('open');
+    btn.nextElementSibling.classList.toggle('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open'));
+      document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open'));
+    }
+  });
+
+</script>
+</body>
+</html>

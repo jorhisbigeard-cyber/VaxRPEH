@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ma candidature — Vax RP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="Vax RP" /></a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="staff.html">Staff</a>
+    <a href="about.html">À propos</a>
+    <a href="reponse.html">&#128236; R&#233;ponses</a>
+    <a href="ticket.html">&#127915; Tickets</a>
+    <a href="creator.html">Créateur</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">🛡️ Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="admin.html">🔐 Panel Admin</a>
+        <a href="creator-panel.html">👑 Panel Créateur</a>
+        <div class="divider"></div>
+        <a href="form.html">📋 Candidature</a>
+        <a href="reponse.html">📬 Ma réponse</a>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem">
+    <div id="nav-user" class="nav-user" style="display:none">
+      <img id="nav-avatar" src="" alt="avatar" />
+      <div class="nav-user-info">
+        <span id="nav-username"></span>
+        <span id="nav-role-badge" class="nav-role" style="display:none"></span>
+      </div>
+      <button class="btn-logout" onclick="location.href='/auth/logout'">Déco</button>
+    </div>
+    <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:0.3rem"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Se connecter
+    </a>
+  </div>
+</nav>
+
+<div style="max-width:600px;margin:0 auto;padding:6rem 1.5rem 4rem;text-align:center">
+  <div id="loading" style="color:var(--text-muted);padding:4rem">Chargement...</div>
+
+  <div id="result" style="display:none">
+    <div id="statut-icon" style="font-size:4rem;margin-bottom:1rem"></div>
+    <h1 id="statut-titre" style="font-size:1.8rem;margin-bottom:0.5rem"></h1>
+    <p id="statut-desc" style="color:var(--text-muted);margin-bottom:1.5rem"></p>
+    <div id="message-box" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:left;margin-bottom:1.5rem">
+      <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem">Message de l'équipe :</div>
+      <div id="message-content" style="line-height:1.7"></div>
+    </div>
+    <a href="index.html" class="btn-primary">Retour à l'accueil</a>
+  </div>
+
+  <div id="no-candidature" style="display:none">
+    <div style="font-size:4rem;margin-bottom:1rem">📋</div>
+    <h2>Aucune candidature</h2>
+    <p style="color:var(--text-muted);margin:1rem 0 1.5rem">Tu n'as pas encore soumis de candidature.</p>
+    <a href="form.html" class="btn-primary">Postuler maintenant</a>
+  </div>
+</div>
+
+<script>
+function toggleDropdown(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-dropdown')) {
+    document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open'));
+  }
+});
+
+fetch('/api/me').then(r => r.json()).then(user => {
+  if (!user.id) { document.getElementById('nav-login-btn').style.display = 'inline-flex'; location.href = '/auth/discord'; return; }
+  document.getElementById('nav-user').style.display = 'flex';
+  document.getElementById('nav-avatar').src = user.avatar;
+  document.getElementById('nav-username').textContent = user.username;
+  if (user.roleName) {
+    const b = document.getElementById('nav-role-badge');
+    b.textContent = user.roleName;
+    b.style.color = user.roleColor;
+    b.style.borderColor = user.roleColor + '66';
+    b.style.background = user.roleColor + '22';
+    b.style.display = 'inline';
+  }
+}).catch(() => location.href = '/auth/discord');
+
+fetch('/api/ma-candidature').then(r => {
+  document.getElementById('loading').style.display = 'none';
+  if (r.status === 404) { document.getElementById('no-candidature').style.display = 'block'; return null; }
+  if (!r.ok) { document.getElementById('no-candidature').style.display = 'block'; return null; }
+  return r.json();
+}).then(data => {
+  if (!data) return;
+  document.getElementById('result').style.display = 'block';
+  const configs = {
+    en_attente: { icon:'⏳', titre:'Candidature en attente', desc:'Ton dossier est en cours d\'examen par l\'équipe. Patience !', color:'var(--text-muted)' },
+    accepte:    { icon:'🎉', titre:'Candidature acceptée !', desc:'Félicitations ! Tu rejoins l\'équipe de modération de Vax RP.', color:'var(--success)' },
+    refuse:     { icon:'😔', titre:'Candidature refusée', desc:'Ta candidature n\'a pas été retenue cette fois. Tu pourras retenter plus tard.', color:'var(--danger)' }
+  };
+  const cfg = configs[data.statut] || configs.en_attente;
+  document.getElementById('statut-icon').textContent = cfg.icon;
+  document.getElementById('statut-titre').textContent = cfg.titre;
+  document.getElementById('statut-titre').style.color = cfg.color;
+  document.getElementById('statut-desc').textContent = cfg.desc;
+  if (data.message) {
+    document.getElementById('message-box').style.display = 'block';
+    document.getElementById('message-content').textContent = data.message;
+  }
+}).catch(() => {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('no-candidature').style.display = 'block';
+});
+</script>
+</body>
+</html>
