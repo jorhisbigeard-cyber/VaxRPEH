@@ -168,8 +168,6 @@ app.get('/api/creator/check', (req, res) => {
   if (!ok) return res.status(403).json({ error: 'Accès refusé' });
   res.json({ ok: true });
 });
-  res.json({ ok: true });
-});
 
 app.get('/api/creator/candidatures', async (req, res) => {
   if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
