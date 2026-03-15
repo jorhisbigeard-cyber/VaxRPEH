@@ -50,7 +50,6 @@
         <span id="nav-username"></span>
         <div class="nav-user-badges">
           <span id="nav-role-badge" class="nav-role" style="display:none"></span>
-          <span id="nav-special-badge" style="display:none"></span>
         </div>
       </div>
       <button class="btn-logout" onclick="location.href='/auth/logout'">D�co</button>
@@ -157,16 +156,6 @@ fetch('/api/me').then(r => r.json()).then(user => {
     b.style.borderColor = user.roleColor + '66';
     b.style.background = user.roleColor + '22';
     b.style.display = 'inline';
-  }
-  const sb = document.getElementById('nav-special-badge');
-  if (user.isCreator) {
-    sb.className = 'badge-owner';
-    sb.textContent = String.fromCodePoint(0x1F451);
-    sb.style.display = 'inline-flex';
-  } else if (user.isAdmin) {
-    sb.className = 'badge-admin';
-    sb.textContent = String.fromCodePoint(0x1F6E1);
-    sb.style.display = 'inline-flex';
   }
 }).catch(() => {});
 </script>

@@ -3,27 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Candidature � Vax RP Emergency Hamburg</title>
+  <title>Candidature — Vax RP Emergency Hamburg</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo"><img src="logo.png" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;" /></a>
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="" /></a>
   <div class="nav-links">
     <a href="index.html">Accueil</a>
     <a href="staff.html">Staff</a>
-    <a href="about.html">� propos</a>
-    <a href="reponse.html">&#128236; R&#233;ponses</a>
-    <a href="ticket.html">&#127915; Tickets</a>
-    <a href="creator.html">Cr�ateur</a>
+    <a href="about.html">À propos</a>
+    <a href="reponse.html">📬 Réponses</a>
+    <a href="ticket.html">🎫 Tickets</a>
+    <a href="creator.html">Créateur</a>
     <div class="nav-dropdown">
-      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">??? Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">🛡️ Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="nav-dropdown-menu">
-        <a href="admin.html">?? Panel Admin</a>
-        <a href="creator-panel.html">?? Panel Cr�ateur</a>
+        <a href="admin.html">🔐 Panel Admin</a>
+        <a href="creator-panel.html">👑 Panel Créateur</a>
         <div class="divider"></div>
-        <a href="form.html">?? Candidature</a>
+        <a href="form.html">📋 Candidature</a>
       </div>
     </div>
   </div>
@@ -32,234 +32,214 @@
       <img id="nav-avatar" src="" alt="avatar" />
       <div class="nav-user-info">
         <span id="nav-username"></span>
-        <div class="nav-user-badges">
-          <span id="nav-role-badge" class="nav-role" style="display:none"></span>
-          <span id="nav-special-badge" style="display:none"></span>
-        </div>
+        <div class="nav-user-badges"><span id="nav-role-badge" class="nav-role" style="display:none"></span></div>
       </div>
-      <button class="btn-logout" onclick="location.href='/auth/logout'">D�co</button>
+      <button class="btn-logout" onclick="location.href='/auth/logout'">Déco</button>
     </div>
-    <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:0.3rem"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-      Se connecter
-    </a>
+    <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">Se connecter</a>
     <a href="form.html" class="nav-cta">Candidature</a>
   </div>
-  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 
 <div class="nav-mobile-menu" id="mobile-menu">
   <a href="index.html">Accueil</a>
   <a href="staff.html">Staff</a>
-  <a href="about.html">� propos</a>
-  <a href="reponse.html">?? R�ponses</a>
-  <a href="ticket.html">?? Tickets</a>
-  <a href="creator.html">Cr�ateur</a>
+  <a href="about.html">À propos</a>
+  <a href="reponse.html">📬 Réponses</a>
+  <a href="ticket.html">🎫 Tickets</a>
+  <a href="creator.html">Créateur</a>
   <div class="nav-mobile-divider"></div>
-  <a href="admin.html">?? Panel Admin</a>
-  <a href="creator-panel.html">?? Panel Cr�ateur</a>
+  <a href="admin.html">🔐 Panel Admin</a>
+  <a href="creator-panel.html">👑 Panel Créateur</a>
   <a href="form.html" class="nav-cta">Candidature</a>
 </div>
 
 <div class="form-container">
   <div class="form-header">
-    <h1>?? Candidature Mod�rateur</h1>
-    <p>R�ponds � toutes les questions honn�tement. Bonne chance !</p>
+    <h1>📋 Candidature Modérateur</h1>
+    <p>Réponds à toutes les questions honnêtement. Bonne chance !</p>
   </div>
 
   <form id="candidature-form">
 
-    <div class="section-title">?? Informations g�n�rales</div>
+    <div class="section-title">👤 Informations générales</div>
     <div class="form-row">
       <div class="form-group">
         <label>Pseudo Roblox <span>*</span></label>
         <input type="text" name="pseudo_roblox" required placeholder="TonPseudo123" />
       </div>
       <div class="form-group">
-        <label>�ge <span>*</span></label>
+        <label>Âge <span>*</span></label>
         <input type="number" name="age" required min="10" max="99" placeholder="16" />
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Depuis combien de temps joues-tu � Emergency Hamburg ? <span>*</span></label>
+        <label>Depuis combien de temps joues-tu à Emergency Hamburg ? <span>*</span></label>
         <input type="text" name="temps_jeu" required placeholder="ex: 6 mois" />
       </div>
       <div class="form-group">
-        <label>Heures de mod�ration disponibles par semaine <span>*</span></label>
+        <label>Heures de modération disponibles par semaine <span>*</span></label>
         <input type="text" name="heures_semaine" required placeholder="ex: 10h" />
       </div>
     </div>
 
-    <div class="section-title">?? Exp�rience</div>
+    <div class="section-title">💼 Expérience</div>
     <div class="form-group">
-      <label>As-tu d�j� �t� mod�rateur ou staff ? Si oui, lequel ? <span>*</span></label>
-      <textarea name="experience_staff" required placeholder="D�cris ton exp�rience..."></textarea>
+      <label>As-tu déjà été modérateur ou staff ? Si oui, lequel ? <span>*</span></label>
+      <textarea name="experience_staff" required placeholder="Décris ton expérience..."></textarea>
     </div>
     <div class="form-group">
-      <label>Sur une �chelle de 1 � 10, combien connais-tu les r�gles RP ? <span>*</span></label>
+      <label>Sur une échelle de 1 à 10, combien connais-tu les règles RP ? <span>*</span></label>
       <div class="scale-group" id="scale-rp">
         <input type="hidden" name="connaissance_rp" id="connaissance_rp_val" />
       </div>
     </div>
     <div class="form-group">
-      <label>Pourquoi veux-tu devenir mod�rateur ? <span>*</span></label>
+      <label>Pourquoi veux-tu devenir modérateur ? <span>*</span></label>
       <textarea name="motivation" required placeholder="Explique ta motivation..."></textarea>
     </div>
 
-    <div class="section-title">?? Connaissance des r�gles</div>
+    <div class="section-title">📜 Connaissance des règles</div>
     <div class="form-group">
       <label>Que ferais-tu si un joueur insulte un autre joueur dans le chat ? <span>*</span></label>
-      <textarea name="regle_insulte" required placeholder="Ta r�ponse..."></textarea>
+      <textarea name="regle_insulte" required placeholder="Ta réponse..."></textarea>
     </div>
     <div class="form-group">
       <label>Que ferais-tu si un joueur triche / exploite ? <span>*</span></label>
-      <textarea name="regle_triche" required placeholder="Ta r�ponse..."></textarea>
+      <textarea name="regle_triche" required placeholder="Ta réponse..."></textarea>
     </div>
     <div class="form-group">
       <label>Que ferais-tu si deux joueurs se disputent ? <span>*</span></label>
-      <textarea name="regle_dispute" required placeholder="Ta r�ponse..."></textarea>
+      <textarea name="regle_dispute" required placeholder="Ta réponse..."></textarea>
     </div>
     <div class="form-group">
-      <label>Que ferais-tu si un ami � toi enfreint les r�gles ? <span>*</span></label>
-      <textarea name="regle_ami" required placeholder="Ta r�ponse..."></textarea>
+      <label>Que ferais-tu si un ami à toi enfreint les règles ? <span>*</span></label>
+      <textarea name="regle_ami" required placeholder="Ta réponse..."></textarea>
     </div>
 
-    <div class="section-title">?? Situation RP</div>
+    <div class="section-title">🎭 Situation RP</div>
     <div class="form-group">
       <label>Un joueur fail RP. Que fais-tu ? <span>*</span></label>
-      <textarea name="situation_failrp" required placeholder="Ta r�ponse..."></textarea>
+      <textarea name="situation_failrp" required placeholder="Ta réponse..."></textarea>
     </div>
     <div class="form-group">
-      <label>Un joueur spam dans le chat. Quelle est ta r�action ? <span>*</span></label>
-      <textarea name="situation_spam" required placeholder="Ta r�ponse..."></textarea>
+      <label>Un joueur spam dans le chat. Quelle est ta réaction ? <span>*</span></label>
+      <textarea name="situation_spam" required placeholder="Ta réponse..."></textarea>
     </div>
     <div class="form-group">
-      <label>Un joueur refuse d'ob�ir apr�s un avertissement. Que fais-tu ? <span>*</span></label>
-      <textarea name="situation_refus" required placeholder="Ta r�ponse..."></textarea>
+      <label>Un joueur refuse d'obéir après un avertissement. Que fais-tu ? <span>*</span></label>
+      <textarea name="situation_refus" required placeholder="Ta réponse..."></textarea>
     </div>
 
-    <div class="section-title">?? Comportement</div>
+    <div class="section-title">🧠 Comportement</div>
     <div class="form-group">
-      <label>Comment rester calme face � un joueur toxique ? <span>*</span></label>
-      <textarea name="comportement_calme" required placeholder="Ta r�ponse..."></textarea>
+      <label>Comment rester calme face à un joueur toxique ? <span>*</span></label>
+      <textarea name="comportement_calme" required placeholder="Ta réponse..."></textarea>
     </div>
     <div class="form-group">
-      <label>Que signifie pour toi �tre impartial ? <span>*</span></label>
-      <textarea name="comportement_impartial" required placeholder="Ta r�ponse..."></textarea>
+      <label>Que signifie pour toi être impartial ? <span>*</span></label>
+      <textarea name="comportement_impartial" required placeholder="Ta réponse..."></textarea>
     </div>
     <div class="form-group">
-      <label>Penses-tu qu'un mod�rateur doit expliquer ses d�cisions ? Pourquoi ? <span>*</span></label>
-      <textarea name="comportement_decisions" required placeholder="Ta r�ponse..."></textarea>
+      <label>Penses-tu qu'un modérateur doit expliquer ses décisions ? Pourquoi ? <span>*</span></label>
+      <textarea name="comportement_decisions" required placeholder="Ta réponse..."></textarea>
     </div>
 
-    <div class="section-title">?? Engagement</div>
+    <div class="section-title">🤝 Engagement</div>
     <div class="form-group">
       <label>Es-tu actif sur Discord ? <span>*</span></label>
       <select name="actif_discord" required>
         <option value="">-- Choisis --</option>
-        <option>Oui, tr�s actif</option>
+        <option>Oui, très actif</option>
         <option>Oui, assez actif</option>
         <option>Moyennement actif</option>
         <option>Peu actif</option>
       </select>
     </div>
     <div class="form-group">
-      <label>Pourquoi devrions-nous te choisir toi plut�t qu'un autre ? <span>*</span></label>
+      <label>Pourquoi devrions-nous te choisir toi plutôt qu'un autre ? <span>*</span></label>
       <textarea name="pourquoi_toi" required placeholder="Convaincs-nous..."></textarea>
     </div>
     <div class="form-group">
-      <label>As-tu quelque chose � ajouter ?</label>
+      <label>As-tu quelque chose à ajouter ?</label>
       <textarea name="ajout" placeholder="Optionnel..."></textarea>
     </div>
 
-    <button type="submit" class="submit-btn" id="submit-btn">Envoyer ma candidature ??</button>
+    <button type="submit" class="submit-btn" id="submit-btn">Envoyer ma candidature 📋</button>
   </form>
 </div>
 
 <div id="toast" class="toast"></div>
 
 <script>
-  function toggleDropdown(btn) { btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('open'); }
-  function toggleMenu() { document.getElementById('hamburger').classList.toggle('open'); document.getElementById('mobile-menu').classList.toggle('open'); }
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.nav-dropdown')) { document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open')); document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open')); }
-    if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) { document.getElementById('hamburger')?.classList.remove('open'); document.getElementById('mobile-menu')?.classList.remove('open'); }
-  });
+function toggleDropdown(btn) { btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('open'); }
+function toggleMenu() { document.getElementById('hamburger').classList.toggle('open'); document.getElementById('mobile-menu').classList.toggle('open'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-dropdown')) { document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open')); document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open')); }
+  if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) { document.getElementById('hamburger')?.classList.remove('open'); document.getElementById('mobile-menu')?.classList.remove('open'); }
+});
 
 fetch('/api/me').then(r => r.json()).then(user => {
-  if (!user.id) { document.getElementById('nav-login-btn').style.display = 'inline-flex'; location.href = '/'; return null; }
+  if (!user.id) { document.getElementById('nav-login-btn').style.display = 'inline-flex'; location.href = '/'; return; }
   document.getElementById('nav-user').style.display = 'flex';
   document.getElementById('nav-avatar').src = user.avatar;
   document.getElementById('nav-username').textContent = user.username;
   if (user.roleName) {
     const b = document.getElementById('nav-role-badge');
-    b.textContent = user.roleName;
-    b.style.color = user.roleColor;
-    b.style.borderColor = user.roleColor + '66';
-    b.style.background = user.roleColor + '22';
+    b.textContent = user.roleName; b.style.color = user.roleColor;
+    b.style.borderColor = user.roleColor + '66'; b.style.background = user.roleColor + '22';
     b.style.display = 'inline';
-  }
-  const sb = document.getElementById('nav-special-badge');
-  if (user.isCreator) {
-    sb.className = 'badge-owner';
-    sb.textContent = String.fromCodePoint(0x1F451);
-    sb.style.display = 'inline-flex';
-  } else if (user.isAdmin) {
-    sb.className = 'badge-admin';
-    sb.textContent = String.fromCodePoint(0x1F6E1);
-    sb.style.display = 'inline-flex';
   }
 }).catch(() => location.href = '/');
 
-  const scaleContainer = document.getElementById('scale-rp');
-  for (let i = 1; i <= 10; i++) {
-    const btn = document.createElement('button');
-    btn.type = 'button'; btn.className = 'scale-btn'; btn.textContent = i;
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('connaissance_rp_val').value = i;
-    });
-    scaleContainer.appendChild(btn);
-  }
-
-  function showToast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.className = `toast ${type} show`;
-    setTimeout(() => t.className = 'toast', 3500);
-  }
-
-  document.getElementById('candidature-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!document.getElementById('connaissance_rp_val').value) {
-      showToast('Choisis une note pour la connaissance des r�gles RP.', 'error'); return;
-    }
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true; btn.textContent = 'Envoi en cours...';
-    try {
-      const res = await fetch('/api/candidature', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
-      });
-      const json = await res.json();
-      if (res.ok) {
-        showToast('Candidature envoy�e ! ?');
-        e.target.reset();
-        document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('connaissance_rp_val').value = '';
-        btn.textContent = 'Candidature envoy�e ?';
-      } else {
-        showToast(json.error || 'Erreur.', 'error');
-        btn.disabled = false; btn.textContent = 'Envoyer ma candidature ??';
-      }
-    } catch {
-      showToast('Erreur r�seau.', 'error');
-      btn.disabled = false; btn.textContent = 'Envoyer ma candidature ??';
-    }
+const scaleContainer = document.getElementById('scale-rp');
+for (let i = 1; i <= 10; i++) {
+  const btn = document.createElement('button');
+  btn.type = 'button'; btn.className = 'scale-btn'; btn.textContent = i;
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('connaissance_rp_val').value = i;
   });
+  scaleContainer.appendChild(btn);
+}
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.className = 'toast', 3500);
+}
+
+document.getElementById('candidature-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!document.getElementById('connaissance_rp_val').value) {
+    showToast('Choisis une note pour la connaissance des règles RP.', 'error'); return;
+  }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Envoi en cours...';
+  try {
+    const res = await fetch('/api/candidature', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+    });
+    const json = await res.json();
+    if (res.ok) {
+      showToast('Candidature envoyée ! ✅');
+      e.target.reset();
+      document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('connaissance_rp_val').value = '';
+      btn.textContent = 'Candidature envoyée ✅';
+    } else {
+      showToast(json.error || 'Erreur.', 'error');
+      btn.disabled = false; btn.textContent = 'Envoyer ma candidature 📋';
+    }
+  } catch {
+    showToast('Erreur réseau.', 'error');
+    btn.disabled = false; btn.textContent = 'Envoyer ma candidature 📋';
+  }
+});
 </script>
 </body>
 </html>

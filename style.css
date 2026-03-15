@@ -203,6 +203,7 @@ nav {
 .statut-accepte { background: rgba(63,185,80,0.15); color: var(--success); border-color: var(--success); }
 .statut-refuse { background: rgba(248,81,73,0.15); color: var(--danger); border-color: var(--danger); }
 .statut-attente { background: rgba(139,148,158,0.15); color: var(--text-muted); border-color: var(--border); }
+.statut-en_attente { background: rgba(139,148,158,0.15); color: var(--text-muted); border-color: var(--border); }
 .ticket-statut-ouvert { color:#3b82f6; border-color:#3b82f6; background:rgba(59,130,246,0.1); }
 .ticket-statut-ferme { color:var(--text-muted); border-color:var(--border); background:var(--surface2); }
 .ticket-statut-resolu { color:var(--success); border-color:var(--success); background:rgba(63,185,80,0.1); }
@@ -255,7 +256,7 @@ footer span { color: var(--accent2); }
 .chat-input textarea { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.8rem; color: var(--text); font-family: inherit; font-size: 0.88rem; resize: none; min-height: 55px; -webkit-appearance: none; }
 .chat-input textarea:focus { outline: none; border-color: var(--accent); }
 
-/* TICKET CARD (mes-tickets) */
+/* TICKET CARD */
 .ticket-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 0.75rem; overflow: hidden; }
 .ticket-header { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1rem; cursor: pointer; transition: background 0.15s; gap: 0.5rem; }
 .ticket-header:hover { background: var(--surface2); }
@@ -263,9 +264,12 @@ footer span { color: var(--accent2); }
 .ticket-body { display: none; padding: 1rem; border-top: 1px solid var(--border); }
 .ticket-body.open { display: block; }
 
+/* BADGES OWNER / ADMIN */
+.badge-owner { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 8px; white-space: nowrap; flex-shrink: 0; background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.5); }
+.badge-admin { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 8px; white-space: nowrap; flex-shrink: 0; background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.5); }
+
 /* ===================== RESPONSIVE MOBILE ===================== */
 
-/* Petits téléphones (< 480px) */
 @media (max-width: 480px) {
   nav { padding: 0 0.75rem; height: 56px; }
   .nav-mobile-menu { top: 56px; }
@@ -327,7 +331,6 @@ footer span { color: var(--accent2); }
   #ban-id-input, #ban-reason-input { width: 100% !important; font-size: 0.85rem; }
 }
 
-/* Téléphones normaux (480px - 768px) */
 @media (min-width: 481px) and (max-width: 768px) {
   nav { padding: 0 1rem; }
   .hero { padding: 5rem 1.25rem 3rem; }
@@ -347,7 +350,6 @@ footer span { color: var(--accent2); }
   .toast { left: 1rem; right: 1rem; bottom: 1rem; }
 }
 
-/* Tous les mobiles (< 768px) */
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
@@ -355,42 +357,31 @@ footer span { color: var(--accent2); }
 
   .page-header { padding: 5.5rem 1rem 2.5rem; }
 
-  /* Admin header */
   .admin-header { flex-direction: column; align-items: flex-start; }
   .admin-header > div { display: flex; flex-wrap: wrap; gap: 0.4rem; width: 100%; }
 
-  /* Card actions sur mobile : wrap */
   .card-actions { flex-wrap: wrap; gap: 0.35rem; max-width: 100%; }
   .card-header { flex-wrap: wrap; }
 
-  /* Panel header */
   .panel-header { flex-direction: column; align-items: flex-start; }
   .panel-header > div:last-child { display: flex; gap: 0.5rem; flex-wrap: wrap; width: 100%; }
   .panel-header > div:last-child a,
   .panel-header > div:last-child button { flex: 1; text-align: center; justify-content: center; }
 
-  /* Ban inputs */
   #tab-bans > div:first-child { flex-direction: column !important; align-items: flex-start !important; }
   #tab-bans > div:first-child > div { width: 100%; display: flex; flex-direction: column; gap: 0.5rem; }
   #ban-id-input, #ban-reason-input { width: 100% !important; }
   #tab-bans > div:first-child .btn-refuse { width: 100%; }
 
-  /* Ticket admin actions */
-  .card-body > div:last-child { flex-wrap: wrap; }
-
-  /* Mes tickets */
   .bubble-content { max-width: 85%; }
   .chat-input { flex-direction: column; }
   .chat-input button { width: 100%; justify-content: center; }
 
-  /* Reponse page */
   #result h1 { font-size: 1.5rem; }
 
-  /* Banni page */
   .banni-box { padding: 1.25rem; }
 }
 
-/* Tablettes (768px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
   nav { padding: 0 1.25rem; }
   .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
@@ -400,24 +391,6 @@ footer span { color: var(--accent2); }
   .stat-cards { grid-template-columns: repeat(3, 1fr); }
 }
 
-/* Très grands écrans */
 @media (min-width: 1400px) {
   .admin-container, .creator-panel { max-width: 1300px; }
 }
-
-/* BADGES OWNER / ADMIN */
-.badge-owner {
-  display: inline-flex; align-items: center; gap: 0.25rem;
-  font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem;
-  border-radius: 8px; white-space: nowrap; flex-shrink: 0;
-  background: rgba(251,191,36,0.15); color: #fbbf24;
-  border: 1px solid rgba(251,191,36,0.5);
-}
-.badge-admin {
-  display: inline-flex; align-items: center; gap: 0.25rem;
-  font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem;
-  border-radius: 8px; white-space: nowrap; flex-shrink: 0;
-  background: rgba(99,102,241,0.15); color: #818cf8;
-  border: 1px solid rgba(99,102,241,0.5);
-}
-.badge-owner svg, .badge-admin svg { flex-shrink: 0; }
