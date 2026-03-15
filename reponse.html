@@ -59,25 +59,25 @@
   <a href="form.html" class="nav-cta">Candidature</a>
 </div>
 
-<div style="max-width:600px;margin:0 auto;padding:6rem 1.5rem 4rem;text-align:center">
-  <div id="loading" style="color:var(--text-muted);padding:4rem">Chargement...</div>
+<div style="max-width:560px;margin:0 auto;padding:clamp(4.5rem,12vw,6rem) clamp(0.9rem,4vw,1.5rem) 3rem;text-align:center">
+  <div id="loading" style="color:var(--text-muted);padding:3rem">Chargement...</div>
 
   <div id="result" style="display:none">
-    <div id="statut-icon" style="font-size:4rem;margin-bottom:1rem"></div>
-    <h1 id="statut-titre" style="font-size:1.8rem;margin-bottom:0.5rem"></h1>
-    <p id="statut-desc" style="color:var(--text-muted);margin-bottom:1.5rem"></p>
-    <div id="message-box" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:left;margin-bottom:1.5rem">
-      <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem">Message de l'équipe :</div>
-      <div id="message-content" style="line-height:1.7"></div>
+    <div id="statut-icon" style="font-size:clamp(3rem,10vw,4rem);margin-bottom:1rem"></div>
+    <h1 id="statut-titre" style="font-size:clamp(1.3rem,5vw,1.8rem);margin-bottom:0.5rem"></h1>
+    <p id="statut-desc" style="color:var(--text-muted);margin-bottom:1.5rem;font-size:0.92rem;line-height:1.6"></p>
+    <div id="message-box" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:left;margin-bottom:1.5rem">
+      <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.4rem">Message de l'équipe :</div>
+      <div id="message-content" style="line-height:1.7;font-size:0.92rem;word-break:break-word"></div>
     </div>
-    <a href="index.html" class="btn-primary">Retour à l'accueil</a>
+    <a href="index.html" class="btn-primary" style="width:100%;justify-content:center">Retour à l'accueil</a>
   </div>
 
   <div id="no-candidature" style="display:none">
-    <div style="font-size:4rem;margin-bottom:1rem">📋</div>
-    <h2>Aucune candidature</h2>
-    <p style="color:var(--text-muted);margin:1rem 0 1.5rem">Tu n'as pas encore soumis de candidature.</p>
-    <a href="form.html" class="btn-primary">Postuler maintenant</a>
+    <div style="font-size:clamp(2.5rem,10vw,4rem);margin-bottom:1rem">📋</div>
+    <h2 style="font-size:clamp(1.2rem,4vw,1.5rem)">Aucune candidature</h2>
+    <p style="color:var(--text-muted);margin:0.75rem 0 1.25rem;font-size:0.9rem">Tu n'as pas encore soumis de candidature.</p>
+    <a href="form.html" class="btn-primary" style="width:100%;justify-content:center">Postuler maintenant</a>
   </div>
 </div>
 

@@ -42,7 +42,23 @@
     </a>
     <a href="form.html" class="nav-cta">Candidature</a>
   </div>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="index.html">Accueil</a>
+  <a href="staff.html">Staff</a>
+  <a href="about.html">À propos</a>
+  <a href="reponse.html">📬 Réponses</a>
+  <a href="ticket.html">🎫 Tickets</a>
+  <a href="creator.html">Créateur</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="admin.html">🔐 Panel Admin</a>
+  <a href="creator-panel.html">👑 Panel Créateur</a>
+  <a href="form.html" class="nav-cta">Candidature</a>
+</div>
 
 <div class="form-container">
   <div class="form-header">
@@ -163,15 +179,11 @@
 <div id="toast" class="toast"></div>
 
 <script>
-  function toggleDropdown(btn) {
-    btn.classList.toggle('open');
-    btn.nextElementSibling.classList.toggle('open');
-  }
+  function toggleDropdown(btn) { btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('open'); }
+  function toggleMenu() { document.getElementById('hamburger').classList.toggle('open'); document.getElementById('mobile-menu').classList.toggle('open'); }
   document.addEventListener('click', e => {
-    if (!e.target.closest('.nav-dropdown')) {
-      document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open'));
-    }
+    if (!e.target.closest('.nav-dropdown')) { document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open')); document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open')); }
+    if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) { document.getElementById('hamburger')?.classList.remove('open'); document.getElementById('mobile-menu')?.classList.remove('open'); }
   });
 
   fetch('/api/me').then(r => {

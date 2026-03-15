@@ -6,17 +6,21 @@
   <title>À propos — Vax RP Emergency Hamburg</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .rules-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; }
-    .rule-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.25rem; display:flex; gap:0.75rem; }
-    .rule-num { background:rgba(37,99,235,0.2); color:var(--accent2); width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0; }
-    .rule-card p { color:var(--text-muted); font-size:0.88rem; line-height:1.5; }
-    .timeline { position:relative; padding-left:2rem; }
+    .rules-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:0.9rem; }
+    .rule-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.1rem; display:flex; gap:0.65rem; }
+    .rule-num { background:rgba(37,99,235,0.2); color:var(--accent2); width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:700; flex-shrink:0; }
+    .rule-card p { color:var(--text-muted); font-size:0.86rem; line-height:1.5; }
+    .timeline { position:relative; padding-left:1.75rem; }
     .timeline::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent),transparent); }
-    .timeline-item { position:relative; margin-bottom:2rem; padding-left:1.5rem; }
-    .timeline-item::before { content:''; position:absolute; left:-2.35rem; top:0.3rem; width:12px; height:12px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); }
-    .timeline-date { font-size:0.75rem; color:var(--accent2); margin-bottom:0.3rem; }
-    .timeline-item h3 { font-size:1rem; margin-bottom:0.3rem; }
-    .timeline-item p { color:var(--text-muted); font-size:0.9rem; line-height:1.6; }
+    .timeline-item { position:relative; margin-bottom:1.75rem; padding-left:1.25rem; }
+    .timeline-item::before { content:''; position:absolute; left:-2.1rem; top:0.3rem; width:11px; height:11px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); }
+    .timeline-date { font-size:0.72rem; color:var(--accent2); margin-bottom:0.25rem; }
+    .timeline-item h3 { font-size:0.95rem; margin-bottom:0.25rem; }
+    .timeline-item p { color:var(--text-muted); font-size:0.88rem; line-height:1.6; }
+    @media (max-width:480px) {
+      .rules-grid { grid-template-columns:1fr; }
+      .about-info-grid { grid-template-columns:1fr 1fr !important; gap:0.6rem !important; }
+    }
   </style>
 </head>
 <body>
@@ -86,15 +90,15 @@
       <p>Que tu veuilles être policier, médecin, pompier, civil ou même criminel, tu trouveras ta place dans notre communauté.</p>
       <p>Nous mettons un point d'honneur sur le respect des règles RP pour garantir une expérience de qualité à tous les membres.</p>
     </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem">
-      <div style="font-size:4rem;text-align:center;margin-bottom:1rem">🏙️</div>
-      <div style="text-align:center;font-weight:700;margin-bottom:0.5rem">Emergency Hamburg</div>
-      <div style="color:var(--text-muted);font-size:0.9rem;text-align:center;line-height:1.6;margin-bottom:1rem">Un univers RP complet sur Roblox avec des dizaines de rôles disponibles.</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
-        <div style="background:var(--surface2);border-radius:8px;padding:0.75rem;text-align:center"><div style="font-size:1.3rem">🚔</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">Police</div></div>
-        <div style="background:var(--surface2);border-radius:8px;padding:0.75rem;text-align:center"><div style="font-size:1.3rem">🚑</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">SAMU</div></div>
-        <div style="background:var(--surface2);border-radius:8px;padding:0.75rem;text-align:center"><div style="font-size:1.3rem">🚒</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">Pompiers</div></div>
-        <div style="background:var(--surface2);border-radius:8px;padding:0.75rem;text-align:center"><div style="font-size:1.3rem">👤</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">Civils</div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem">
+      <div style="font-size:3.5rem;text-align:center;margin-bottom:0.75rem">🏙️</div>
+      <div style="text-align:center;font-weight:700;margin-bottom:0.4rem">Emergency Hamburg</div>
+      <div style="color:var(--text-muted);font-size:0.86rem;text-align:center;line-height:1.6;margin-bottom:0.9rem">Un univers RP complet sur Roblox avec des dizaines de rôles disponibles.</div>
+      <div class="about-info-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem">
+        <div style="background:var(--surface2);border-radius:8px;padding:0.65rem;text-align:center"><div style="font-size:1.2rem">🚔</div><div style="font-size:0.76rem;color:var(--text-muted);margin-top:0.2rem">Police</div></div>
+        <div style="background:var(--surface2);border-radius:8px;padding:0.65rem;text-align:center"><div style="font-size:1.2rem">🚑</div><div style="font-size:0.76rem;color:var(--text-muted);margin-top:0.2rem">SAMU</div></div>
+        <div style="background:var(--surface2);border-radius:8px;padding:0.65rem;text-align:center"><div style="font-size:1.2rem">🚒</div><div style="font-size:0.76rem;color:var(--text-muted);margin-top:0.2rem">Pompiers</div></div>
+        <div style="background:var(--surface2);border-radius:8px;padding:0.65rem;text-align:center"><div style="font-size:1.2rem">👤</div><div style="font-size:0.76rem;color:var(--text-muted);margin-top:0.2rem">Civils</div></div>
       </div>
     </div>
   </div>
