@@ -41,6 +41,7 @@
     <a href="about.html">&#192; propos</a>
     <a href="reponse.html">&#128236; R&#233;ponses</a>
     <a href="creator.html">Cr&#233;ateur</a>
+    <a href="index.html#annonces-section" id="nav-annonces" style="display:none">&#128226; Annonces</a>
     <div class="nav-dropdown">
       <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">&#9881; Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="nav-dropdown-menu">
@@ -82,6 +83,7 @@
   <a href="about.html">&#192; propos</a>
   <a href="reponse.html">&#128236; R&#233;ponses</a>
   <a href="creator.html">Cr&#233;ateur</a>
+    <a href="index.html#annonces-section" id="nav-annonces" style="display:none">&#128226; Annonces</a>
   <div class="nav-mobile-divider"></div>
   <a href="admin.html">&#128737; Panel Admin</a>
   <a href="creator-panel.html">&#128081; Panel Cr&#233;ateur</a>
@@ -211,5 +213,9 @@ async function envoyerMessage(id) {
   else { const j = await res.json(); showToast(j.error || 'Erreur.', 'error'); }
 }
 </script>
-</body>
+<script>
+fetch('/api/annonces').then(r=>r.json()).then(data=>{
+  if(data.length) document.getElementById('nav-annonces').style.display='inline';
+}).catch(()=>{});
+</script></body>
 </html>

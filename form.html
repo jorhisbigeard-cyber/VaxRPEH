@@ -241,5 +241,10 @@ document.getElementById('candidature-form').addEventListener('submit', async e =
   }
 });
 </script>
+<script>
+fetch('/api/annonces').then(r=>r.json()).then(data=>{
+  if(data.length) document.getElementById('nav-annonces').style.display='inline';
+}).catch(()=>{});
+</script>
 </body>
 </html>

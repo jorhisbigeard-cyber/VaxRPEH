@@ -120,5 +120,10 @@ document.addEventListener('click', e => {
   if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) { document.getElementById('hamburger')?.classList.remove('open'); document.getElementById('mobile-menu')?.classList.remove('open'); }
 });
 </script>
+<script>
+fetch('/api/annonces').then(r=>r.json()).then(data=>{
+  if(data.length) document.getElementById('nav-annonces').style.display='inline';
+}).catch(()=>{});
+</script>
 </body>
 </html>

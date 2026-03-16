@@ -71,5 +71,10 @@ fetch('/api/me').then(r => r.json()).then(user => {
   if (user.avatar) document.getElementById('creator-avatar').src = user.avatar;
 }).catch(() => {});
 </script>
+<script>
+fetch('/api/annonces').then(r=>r.json()).then(data=>{
+  if(data.length) document.getElementById('nav-annonces').style.display='inline';
+}).catch(()=>{});
+</script>
 </body>
 </html>

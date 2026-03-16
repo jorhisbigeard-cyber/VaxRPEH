@@ -124,5 +124,10 @@ fetch('/api/ma-candidature').then(r => {
   document.getElementById('no-candidature').style.display = 'block';
 });
 </script>
+<script>
+fetch('/api/annonces').then(r=>r.json()).then(data=>{
+  if(data.length) document.getElementById('nav-annonces').style.display='inline';
+}).catch(()=>{});
+</script>
 </body>
 </html>
