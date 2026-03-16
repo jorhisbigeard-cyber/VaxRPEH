@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mes tickets � Vax RP</title>
+  <title>Mes tickets &#8211; Vax RP</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     .ticket-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; margin-bottom:1rem; overflow:hidden; }
@@ -38,19 +38,19 @@
   <div class="nav-links">
     <a href="index.html">Accueil</a>
     <a href="staff.html">Staff</a>
-    <a href="about.html">� propos</a>
-    <a href="reponse.html">&#128236; R�ponses</a>
-    <a href="creator.html">Cr�ateur</a>
+    <a href="about.html">&#192; propos</a>
+    <a href="reponse.html">&#128236; R&#233;ponses</a>
+    <a href="creator.html">Cr&#233;ateur</a>
     <div class="nav-dropdown">
-      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">??? Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">&#9881; Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="nav-dropdown-menu">
-        <a href="admin.html">?? Panel Admin</a>
-        <a href="creator-panel.html">?? Panel Cr�ateur</a>
+        <a href="admin.html">&#128737; Panel Admin</a>
+        <a href="creator-panel.html">&#128081; Panel Cr&#233;ateur</a>
         <div class="divider"></div>
-        <a href="form.html">?? Candidature</a>
-        <a href="reponse.html">?? Ma r�ponse</a>
-        <a href="ticket.html">?? Ouvrir un ticket</a>
-        <a href="mes-tickets.html">?? Mes tickets</a>
+        <a href="form.html">&#128196; Candidature</a>
+        <a href="reponse.html">&#128236; Ma r&#233;ponse</a>
+        <a href="ticket.html">&#127915; Ouvrir un ticket</a>
+        <a href="mes-tickets.html">&#128194; Mes tickets</a>
       </div>
     </div>
   </div>
@@ -64,7 +64,7 @@
           <span id="nav-special-badge" style="display:none"></span>
         </div>
       </div>
-      <button class="btn-logout" onclick="location.href='/auth/logout'">D�co</button>
+      <button class="btn-logout" onclick="location.href='/auth/logout'">D&#233;co</button>
     </div>
     <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:0.3rem"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
@@ -76,53 +76,34 @@
     <span></span><span></span><span></span>
   </button>
 </nav>
-
 <div class="nav-mobile-menu" id="mobile-menu">
   <a href="index.html">Accueil</a>
   <a href="staff.html">Staff</a>
-  <a href="about.html">� propos</a>
-  <a href="reponse.html">?? R�ponses</a>
-  <a href="creator.html">Cr�ateur</a>
+  <a href="about.html">&#192; propos</a>
+  <a href="reponse.html">&#128236; R&#233;ponses</a>
+  <a href="creator.html">Cr&#233;ateur</a>
   <div class="nav-mobile-divider"></div>
-  <a href="admin.html">?? Panel Admin</a>
-  <a href="creator-panel.html">?? Panel Cr�ateur</a>
+  <a href="admin.html">&#128737; Panel Admin</a>
+  <a href="creator-panel.html">&#128081; Panel Cr&#233;ateur</a>
   <a href="ticket.html" class="nav-cta">+ Nouveau ticket</a>
 </div>
-
 <div style="max-width:800px;margin:0 auto;padding:clamp(4.5rem,12vw,6rem) clamp(0.9rem,4vw,1.5rem) 3rem">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.75rem">
-    <h1 style="font-size:clamp(1.2rem,4vw,1.5rem)">?? Mes tickets</h1>
+    <h1 style="font-size:clamp(1.2rem,4vw,1.5rem)">&#128194; Mes tickets</h1>
     <a href="ticket.html" class="btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem">+ Nouveau ticket</a>
   </div>
   <div id="tickets-list"><div class="loading" style="text-align:center;padding:3rem;color:var(--text-muted)">Chargement...</div></div>
 </div>
-
 <div id="toast" class="toast"></div>
-
 <script>
-function toggleDropdown(btn) {
-  btn.classList.toggle('open');
-  btn.nextElementSibling.classList.toggle('open');
-}
-function toggleMenu() {
-  document.getElementById('hamburger').classList.toggle('open');
-  document.getElementById('mobile-menu').classList.toggle('open');
-}
+function toggleDropdown(btn) { btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('open'); }
+function toggleMenu() { document.getElementById('hamburger').classList.toggle('open'); document.getElementById('mobile-menu').classList.toggle('open'); }
 document.addEventListener('click', e => {
-  if (!e.target.closest('.nav-dropdown')) {
-    document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open'));
-    document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open'));
-  }
-  if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) {
-    document.getElementById('hamburger')?.classList.remove('open');
-    document.getElementById('mobile-menu')?.classList.remove('open');
-  }
+  if (!e.target.closest('.nav-dropdown')) { document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open')); document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open')); }
+  if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) { document.getElementById('hamburger')?.classList.remove('open'); document.getElementById('mobile-menu')?.classList.remove('open'); }
 });
-
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
 let currentUser = null;
-
 fetch('/api/me').then(r => {
   if (!r.ok) { location.href = '/auth/discord'; return null; }
   return r.json();
@@ -139,47 +120,35 @@ fetch('/api/me').then(r => {
     b.style.display = 'inline';
   }
   const sb = document.getElementById('nav-special-badge');
-  if (user.isCreator) {
-    sb.className = 'badge-owner';
-    sb.innerHTML = '&#x1F451;';
-    sb.style.display = 'inline-flex';
-  } else if (user.isAdmin) {
-    sb.className = 'badge-admin';
-    sb.innerHTML = '&#x1F6E1;';
-    sb.style.display = 'inline-flex';
-  }
+  if (user.isCreator) { sb.className = 'badge-owner'; sb.innerHTML = '&#x1F451;'; sb.style.display = 'inline-flex'; }
+  else if (user.isAdmin) { sb.className = 'badge-admin'; sb.innerHTML = '&#x1F6E1;'; sb.style.display = 'inline-flex'; }
   loadTickets();
 }).catch(() => location.href = '/auth/discord');
-
 async function loadTickets() {
   const res = await fetch('/api/mes-tickets');
   const data = await res.json();
   if (!data.length) {
-    document.getElementById('tickets-list').innerHTML = `<div style="text-align:center;padding:4rem;color:var(--text-muted)"><div style="font-size:3rem;margin-bottom:1rem">??</div><p>Aucun ticket ouvert.</p><a href="ticket.html" class="btn-primary" style="margin-top:1rem;display:inline-block">Ouvrir un ticket</a></div>`;
+    document.getElementById('tickets-list').innerHTML = `<div style="text-align:center;padding:4rem;color:var(--text-muted)"><div style="font-size:3rem;margin-bottom:1rem">&#128194;</div><p>Aucun ticket ouvert.</p><a href="ticket.html" class="btn-primary" style="margin-top:1rem;display:inline-block">Ouvrir un ticket</a></div>`;
     return;
   }
-  const statutLabel = { ouvert:'?? Ouvert', resolu:'? R�solu', ferme:'?? Ferm�' };
+  const statutLabel = { ouvert:'&#128308; Ouvert', resolu:'&#9989; R&#233;solu', ferme:'&#128274; Ferm&#233;' };
   document.getElementById('tickets-list').innerHTML = data.map(t => {
     const date = new Date(t.date).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
     const s = t.statut || 'ouvert';
     const isClosed = s === 'ferme';
     const lastMsg = t.reponses?.length ? t.reponses[t.reponses.length - 1] : null;
     const hasNewStaffReply = lastMsg && !lastMsg.isUser;
-    const newBadge = hasNewStaffReply ? `<span style="font-size:0.65rem;background:rgba(248,81,73,0.2);color:#f87171;border:1px solid #f8514966;border-radius:8px;padding:0.15rem 0.5rem;font-weight:700;animation:pulse 1.5s infinite">?? R�ponse staff</span>` : '';
-
-    // Message initial
+    const newBadge = hasNewStaffReply ? `<span style="font-size:0.65rem;background:rgba(248,81,73,0.2);color:#f87171;border:1px solid #f8514966;border-radius:8px;padding:0.15rem 0.5rem;font-weight:700;animation:pulse 1.5s infinite">&#128172; R&#233;ponse staff</span>` : '';
     const msgs = [{ message: t.description, date: t.date, staff: t.discordUsername, isUser: true, avatar: t.discordAvatar, roleName: currentUser?.roleName || '', roleColor: currentUser?.roleColor || '#8b949e' }];
-    // + toutes les r�ponses
     (t.reponses || []).forEach(r => msgs.push(r));
-
     const bubblesHtml = msgs.map(m => {
       const isMe = m.isUser;
       const time = new Date(m.date).toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
-      const avatarHtml = m.avatar ? `<img src="${escHtml(m.avatar)}" alt="" />` : (isMe ? '??' : '???');
+      const avatarHtml = m.avatar ? `<img src="${escHtml(m.avatar)}" alt="" />` : (isMe ? '&#128100;' : '&#128101;');
       const roleColor = m.roleColor || (isMe ? '#8b949e' : '#f87171');
       const roleName = m.roleName || (isMe ? 'Membre' : 'Staff');
       const roleHtml = `<span style="font-size:0.65rem;padding:0.1rem 0.4rem;border-radius:8px;font-weight:600;border:1px solid;color:${roleColor};border-color:${roleColor}66;background:${roleColor}22">${escHtml(roleName)}</span>`;
-      const staffBadge = !isMe ? `<span style="font-size:0.65rem;background:rgba(248,81,73,0.15);color:#f87171;border:1px solid #f8514966;border-radius:8px;padding:0.1rem 0.4rem;font-weight:700">??? Staff</span>` : '';
+      const staffBadge = !isMe ? `<span style="font-size:0.65rem;background:rgba(248,81,73,0.15);color:#f87171;border:1px solid #f8514966;border-radius:8px;padding:0.1rem 0.4rem;font-weight:700">&#128737; Staff</span>` : '';
       return `<div class="chat-bubble ${isMe ? 'user' : ''}">
         <div class="bubble-avatar">${avatarHtml}</div>
         <div class="bubble-content">
@@ -191,13 +160,12 @@ async function loadTickets() {
         </div>
       </div>`;
     }).join('');
-
-    const inputHtml = isClosed ? `<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:0.75rem;background:var(--surface2);border-radius:8px;margin-top:1rem">?? Ce ticket est ferm�</div>` :
-      `<div class="chat-input">
-        <textarea id="msg-${t.id}" placeholder="�crire un message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();envoyerMessage(${t.id})}"></textarea>
-        <button class="btn-primary" style="align-self:flex-end;padding:0.6rem 1rem" onclick="envoyerMessage(${t.id})">Envoyer</button>
-      </div>`;
-
+    const inputHtml = isClosed
+      ? `<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:0.75rem;background:var(--surface2);border-radius:8px;margin-top:1rem">&#128274; Ce ticket est ferm&#233;</div>`
+      : `<div class="chat-input">
+          <textarea id="msg-${t.id}" placeholder="&#201;crire un message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();envoyerMessage(${t.id})}"></textarea>
+          <button class="btn-primary" style="align-self:flex-end;padding:0.6rem 1rem" onclick="envoyerMessage(${t.id})">Envoyer</button>
+        </div>`;
     return `<div class="ticket-card">
       <div class="ticket-header" onclick="toggleTicket('tb-${t.id}','tc-${t.id}')">
         <div style="min-width:0;flex:1">
@@ -217,26 +185,20 @@ async function loadTickets() {
       </div>
     </div>`;
   }).join('');
-  // Sync chevrons pour les tickets auto-ouverts
   data.forEach(t => {
     const lastMsg = t.reponses?.length ? t.reponses[t.reponses.length - 1] : null;
-    if (lastMsg && !lastMsg.isUser) {
-      document.getElementById(`tc-${t.id}`)?.classList.add('open');
-    }
+    if (lastMsg && !lastMsg.isUser) { document.getElementById(`tc-${t.id}`)?.classList.add('open'); }
   });
 }
-
 function toggleTicket(bodyId, chevId) {
   document.getElementById(bodyId).classList.toggle('open');
   document.getElementById(chevId).classList.toggle('open');
 }
-
 function showToast(msg, type='success') {
   const t = document.getElementById('toast');
   t.textContent = msg; t.className = `toast ${type} show`;
   setTimeout(() => t.className = 'toast', 3000);
 }
-
 async function envoyerMessage(id) {
   const input = document.getElementById(`msg-${id}`);
   const message = input.value.trim();
@@ -247,6 +209,7 @@ async function envoyerMessage(id) {
   });
   if (res.ok) { input.value = ''; loadTickets(); }
   else { const j = await res.json(); showToast(j.error || 'Erreur.', 'error'); }
-}</script>
+}
+</script>
 </body>
 </html>
