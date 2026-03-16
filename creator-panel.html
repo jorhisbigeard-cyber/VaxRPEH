@@ -119,6 +119,7 @@
     <div class="tab" onclick="switchTab('bans')">🔨 Bans</div>
     <div class="tab" onclick="switchTab('admins')">🛡️ Admins</div>
     <div class="tab" onclick="switchTab('stats')">📊 Statistiques</div>
+    <div class="tab" onclick="switchTab('annonces')">📢 Annonces</div>
   </div>
 
   <!-- TAB CANDIDATURES -->
@@ -169,20 +170,22 @@
   </div>
 
   <!-- TAB STATS -->
+  <!-- TAB STATS -->
   <div class="tab-content" id="tab-stats">
     <div class="stat-cards" id="stat-cards">
-      <div class="stat-card"><div class="num" id="stat-total">—</div><div class="lbl">Candidatures totales</div></div>
-      <div class="stat-card"><div class="num" id="stat-today">—</div><div class="lbl">Aujourd'hui</div></div>
-      <div class="stat-card"><div class="num" id="stat-week">—</div><div class="lbl">Cette semaine</div></div>
+      <div class="stat-card"><div class="num" id="stat-total">&#8212;</div><div class="lbl">Candidatures totales</div></div>
+      <div class="stat-card"><div class="num" id="stat-today">&#8212;</div><div class="lbl">Aujourd&#39;hui</div></div>
+      <div class="stat-card"><div class="num" id="stat-week">&#8212;</div><div class="lbl">Cette semaine</div></div>
     </div>
     <div id="recent-list"></div>
+  </div>
 
   <!-- TAB ANNONCES -->
   <div class="tab-content" id="tab-annonces">
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem">
       <h3 style="margin-bottom:1rem;font-size:1rem">&#128226; Nouvelle annonce</h3>
       <div style="display:flex;flex-direction:column;gap:0.75rem">
-        <input id="ann-titre" placeholder="Titre de l annonce" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-size:0.9rem;width:100%" />
+        <input id="ann-titre" placeholder="Titre de l&#39;annonce" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-size:0.9rem;width:100%" />
         <textarea id="ann-contenu" placeholder="Contenu..." style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-family:inherit;resize:vertical;min-height:80px;font-size:0.9rem;width:100%"></textarea>
         <select id="ann-type" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-size:0.9rem">
           <option value="info">&#8505;&#65039; Info</option>
@@ -195,9 +198,8 @@
     </div>
     <div id="annonces-creator-list"></div>
   </div>
-  </div>
-</div>
 
+</div>
 <div id="toast" class="toast"></div>
 
 <script>
@@ -228,6 +230,55 @@ function switchTab(name) {
   if (name === 'reponses') loadReponses();
   if (name === 'tickets') loadTicketsPanel();
   if (name === 'bans') loadBans();
+  if (name === 'annonces') loadAnnoncesCreator();
+}
+
+async function publierAnnonce() {
+  const titre = document.getElementById('ann-titre').value.trim();
+  const contenu = document.getElementById('ann-contenu').value.trim();
+  const type = document.getElementById('ann-type').value;
+  if (!titre || !contenu) { showToast('Titre et contenu requis.', 'error'); return; }
+  const res = await fetch('/api/annonces', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ titre, contenu, type })
+  });
+  if (res.ok) {
+    showToast('Annonce publi&#233;e !');
+    document.getElementById('ann-titre').value = '';
+    document.getElementById('ann-contenu').value = '';
+    loadAnnoncesCreator();
+  } else showToast('Erreur.', 'error');
+}
+
+async function loadAnnoncesCreator() {
+  const res = await fetch('/api/annonces');
+  if (!res.ok) return;
+  const data = await res.json();
+  const typeLabel = { info:'&#8505;&#65039; Info', update:'&#128640; Mise &#224; jour', event:'&#127881; &#201;v&#233;nement', alerte:'&#9888;&#65039; Alerte' };
+  const list = document.getElementById('annonces-creator-list');
+  if (!data.length) { list.innerHTML = '<div class="empty-state"><p>Aucune annonce.</p></div>'; return; }
+  list.innerHTML = data.map(a => {
+    const date = new Date(a.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    return `<div class="candidature-card" style="margin-bottom:0.75rem">
+      <div style="padding:1rem 1.25rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem">
+            <span style="font-size:0.78rem;padding:0.15rem 0.5rem;border-radius:8px;background:var(--surface2);border:1px solid var(--border)">${typeLabel[a.type]||a.type}</span>
+            <span style="font-size:0.78rem;color:var(--text-muted)">${date} — par ${escHtml(a.auteur)}</span>
+          </div>
+          <strong style="font-size:0.95rem">${escHtml(a.titre)}</strong>
+          <p style="color:var(--text-muted);font-size:0.88rem;margin-top:0.3rem;line-height:1.5">${escHtml(a.contenu)}</p>
+        </div>
+        <button class="btn-refuse" onclick="supprimerAnnonce(${a.id})">&#128465; Supprimer</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function supprimerAnnonce(id) {
+  if (!confirm('Supprimer cette annonce ?')) return;
+  const res = await fetch(`/api/annonces/${id}`, { method: 'DELETE' });
+  if (res.ok) { showToast('Annonce supprim&#233;e.'); loadAnnoncesCreator(); }
 }
 
 async function loadTicketsPanel() {
