@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Annonces &#8212; Vax RP</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .annonces-page { max-width: 800px; margin: 0 auto; padding: 6rem 1.5rem 3rem; }
+    .annonce-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem; transition: border-color 0.2s; }
+    .annonce-card.type-info    { border-left: 4px solid rgba(59,130,246,0.8); }
+    .annonce-card.type-update  { border-left: 4px solid rgba(16,185,129,0.8); }
+    .annonce-card.type-event   { border-left: 4px solid rgba(251,191,36,0.8); }
+    .annonce-card.type-alerte  { border-left: 4px solid rgba(239,68,68,0.8); }
+    .annonce-meta { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+    .annonce-type-badge { font-size: 0.75rem; padding: 0.15rem 0.55rem; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); }
+    .annonce-date { font-size: 0.78rem; color: var(--text-muted); }
+    .annonce-auteur { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--text-muted); }
+    .annonce-auteur img { width: 18px; height: 18px; border-radius: 50%; }
+    .annonce-titre { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .annonce-contenu { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;" /></a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="staff.html">Staff</a>
+    <a href="about.html">&#192; propos</a>
+    <a href="reponse.html">&#128236; R&#233;ponses</a>
+    <a href="ticket.html">&#127915; Tickets</a>
+    <a href="creator.html">Cr&#233;ateur</a>
+    <a href="annonces.html" class="active">&#128226; Annonces</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">&#9881;&#65039; Panels <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="admin.html">&#128737; Panel Admin</a>
+        <a href="creator-panel.html">&#128081; Panel Cr&#233;ateur</a>
+        <div class="divider"></div>
+        <a href="form.html">&#128196; Candidature</a>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem">
+    <div id="nav-user" class="nav-user" style="display:none">
+      <img id="nav-avatar" src="" alt="avatar" />
+      <div class="nav-user-info">
+        <span id="nav-username"></span>
+        <div class="nav-user-badges"><span id="nav-role-badge" class="nav-role" style="display:none"></span></div>
+      </div>
+      <button class="btn-logout" onclick="location.href='/auth/logout'">D&#233;co</button>
+    </div>
+    <a href="/auth/discord" id="nav-login-btn" class="btn-primary" style="display:none;font-size:0.85rem;padding:0.45rem 1rem">Se connecter</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="index.html">Accueil</a>
+  <a href="staff.html">Staff</a>
+  <a href="about.html">&#192; propos</a>
+  <a href="reponse.html">&#128236; R&#233;ponses</a>
+  <a href="ticket.html">&#127915; Tickets</a>
+  <a href="creator.html">Cr&#233;ateur</a>
+  <a href="annonces.html">&#128226; Annonces</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="admin.html">&#128737; Panel Admin</a>
+  <a href="creator-panel.html">&#128081; Panel Cr&#233;ateur</a>
+  <a href="form.html" class="nav-cta">Candidature</a>
+</div>
+
+<div class="annonces-page">
+  <div class="section-header" style="text-align:center;margin-bottom:2rem">
+    <div class="section-tag">&#128226; Annonces</div>
+    <h1 style="font-size:2rem;margin-top:0.5rem">Annonces officielles</h1>
+    <p style="color:var(--text-muted)">Les derni&#232;res nouvelles de l&#39;&#233;quipe Vax RP.</p>
+  </div>
+  <div id="loading" style="text-align:center;color:var(--text-muted);padding:3rem">Chargement...</div>
+  <div id="annonces-list" style="display:none"></div>
+  <div id="empty" style="display:none;text-align:center;padding:3rem">
+    <div style="font-size:3rem;margin-bottom:1rem">&#128226;</div>
+    <h2>Aucune annonce</h2>
+    <p style="color:var(--text-muted)">Aucune annonce pour le moment. Revenez plus tard !</p>
+  </div>
+</div>
+
+<script>
+function toggleDropdown(btn) { btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('open'); }
+function toggleMenu() { document.getElementById('hamburger').classList.toggle('open'); document.getElementById('mobile-menu').classList.toggle('open'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-dropdown')) { document.querySelectorAll('.nav-dropdown-btn').forEach(b => b.classList.remove('open')); document.querySelectorAll('.nav-dropdown-menu').forEach(m => m.classList.remove('open')); }
+  if (!e.target.closest('nav') && !e.target.closest('.nav-mobile-menu')) { document.getElementById('hamburger')?.classList.remove('open'); document.getElementById('mobile-menu')?.classList.remove('open'); }
+});
+
+fetch('/api/me').then(r => r.json()).then(user => {
+  if (!user.id) { document.getElementById('nav-login-btn').style.display = 'inline-flex'; return; }
+  document.getElementById('nav-user').style.display = 'flex';
+  document.getElementById('nav-avatar').src = user.avatar;
+  document.getElementById('nav-username').textContent = user.username;
+  if (user.roleName) {
+    const b = document.getElementById('nav-role-badge');
+    b.textContent = user.roleName; b.style.color = user.roleColor;
+    b.style.borderColor = user.roleColor + '66'; b.style.background = user.roleColor + '22';
+    b.style.display = 'inline';
+  }
+}).catch(() => {});
+
+const typeLabel = { info:'&#8505;&#65039; Info', update:'&#128640; Mise &#224; jour', event:'&#127881; &#201;v&#233;nement', alerte:'&#9888;&#65039; Alerte' };
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+fetch('/api/annonces').then(r => r.json()).then(data => {
+  document.getElementById('loading').style.display = 'none';
+  if (!data.length) { document.getElementById('empty').style.display = 'block'; return; }
+  document.getElementById('annonces-list').style.display = 'block';
+  document.getElementById('annonces-list').innerHTML = data.map(a => {
+    const date = new Date(a.date).toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    const avatarHtml = a.auteurAvatar ? `<img src="${esc(a.auteurAvatar)}" alt="" />` : '';
+    return `<div class="annonce-card type-${esc(a.type)}">
+      <div class="annonce-meta">
+        <span class="annonce-type-badge">${typeLabel[a.type] || esc(a.type)}</span>
+        <span class="annonce-date">${date}</span>
+        <span class="annonce-auteur">${avatarHtml} ${esc(a.auteur)}</span>
+      </div>
+      <div class="annonce-titre">${esc(a.titre)}</div>
+      <div class="annonce-contenu">${esc(a.contenu)}</div>
+    </div>`;
+  }).join('');
+}).catch(() => {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('empty').style.display = 'block';
+});
+</script>
+</body>
+</html>
