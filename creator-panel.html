@@ -447,17 +447,9 @@ async function deleteCandidature(e, id) {
   else showToast('Erreur.', 'error');
 }
 
-fetch('/api/creator/check').then(r => {
-  if (r.ok) {
-    document.getElementById('code-screen').style.display = 'none';
-    document.getElementById('creator-panel').style.display = 'block';
-    loadCandidatures();
-  } else if (r.status === 403) {
-    document.getElementById('code-screen').style.display = 'flex';
-  } else {
-    location.href = '/auth/discord';
-  }
-}).catch(() => location.href = '/auth/discord');
+fetch('/api/creator/init').then(() => {
+  document.getElementById('code-screen').style.display = 'flex';
+});
 
 async function checkCode() {
   const code = document.getElementById('creator-code-input').value.trim();

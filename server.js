@@ -146,9 +146,19 @@ app.post('/api/candidature', async (req, res) => {
   res.json({ success: true });
 });
 
+app.get('/api/admin/check', (req, res) => {
+  req.session.isAdmin = false;
+  res.json({ ok: false });
+});
+
 app.post('/api/admin/login', (req, res) => {
   if (req.body.code === ADMIN_CODE) { req.session.isAdmin = true; res.json({ success: true }); }
   else res.status(403).json({ error: 'Code incorrect' });
+});
+
+app.get('/api/creator/init', (req, res) => {
+  req.session.isCreatorCode = false;
+  res.json({ ok: false });
 });
 
 app.post('/api/creator/login', (req, res) => {
@@ -172,20 +182,23 @@ app.get('/api/admin/candidatures', async (req, res) => {
   res.json(await db.collection('candidatures').find().toArray());
 });
 
+function isCreator(req) {
+  return req.session.isCreatorCode || req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID;
+}
+
 app.get('/api/creator/check', (req, res) => {
   if (!req.session.user) return res.status(401).json({ error: 'Non connecté' });
-  const ok = req.session.isCreatorCode || isStaff(req);
-  if (!ok) return res.status(403).json({ error: 'Accès refusé' });
+  if (!isCreator(req)) return res.status(403).json({ error: 'Accès refusé' });
   res.json({ ok: true });
 });
 
 app.get('/api/creator/candidatures', async (req, res) => {
-  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
+  if (!isCreator(req)) return res.status(403).json({ error: 'Accès refusé' });
   res.json(await db.collection('candidatures').find().toArray());
 });
 
 app.delete('/api/creator/candidature/:id', async (req, res) => {
-  if (!isStaff(req)) return res.status(403).json({ error: 'Accès refusé' });
+  if (!isCreator(req)) return res.status(403).json({ error: 'Accès refusé' });
   await db.collection('candidatures').deleteOne({ id: parseInt(req.params.id) });
   res.json({ success: true });
 });
