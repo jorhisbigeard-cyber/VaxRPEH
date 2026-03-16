@@ -315,4 +315,24 @@ app.post('/api/admin/ticket/:id/repondre', async (req, res) => {
   res.json({ success: true });
 });
 
+// Annonces
+app.get('/api/annonces', async (req, res) => {
+  res.json(await db.collection('annonces').find().sort({ date: -1 }).toArray());
+});
+
+app.post('/api/annonces', async (req, res) => {
+  if (!isStaff(req) && !isCreator(req)) return res.status(403).json({ error: 'Accès refusé' });
+  const { titre, contenu, type } = req.body;
+  if (!titre || !contenu) return res.status(400).json({ error: 'Titre et contenu requis' });
+  const annonce = { id: Date.now(), titre, contenu, type: type || 'info', auteur: req.session.user?.username || 'Admin', auteurAvatar: req.session.user?.avatar || '', date: new Date().toISOString() };
+  await db.collection('annonces').insertOne(annonce);
+  res.json({ success: true, annonce });
+});
+
+app.delete('/api/annonces/:id', async (req, res) => {
+  if (!isStaff(req) && !isCreator(req)) return res.status(403).json({ error: 'Accès refusé' });
+  await db.collection('annonces').deleteOne({ id: parseInt(req.params.id) });
+  res.json({ success: true });
+});
+
 app.listen(PORT, () => console.log(`✅ Serveur lancé sur http://localhost:${PORT}`));

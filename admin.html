@@ -73,6 +73,7 @@
     <h1>&#9881; Panel Admin</h1>
     <div style="display:flex;gap:0.5rem">
       <button class="tab" id="tab-btn-cand" onclick="switchAdminTab('candidatures')" style="cursor:pointer">&#128196; Candidatures</button>
+      <button class="tab" id="tab-btn-ann" onclick="switchAdminTab('annonces')" style="cursor:pointer">&#128226; Annonces</button>
       <button class="tab active" id="tab-btn-tick" onclick="switchAdminTab('tickets')" style="cursor:pointer">&#127915; Tickets</button>
     </div>
   </div>
@@ -89,7 +90,41 @@
     </div>
     <div id="tickets-list"></div>
   </div>
-</div>
+  <div id="admin-tab-annonces" style="display:none">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem">
+      <h3 style="margin-bottom:1rem;font-size:1rem">&#128226; Nouvelle annonce</h3>
+      <div style="display:flex;flex-direction:column;gap:0.75rem">
+        <input id="ann-titre" placeholder="Titre de l annonce" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-size:0.9rem" />
+        <textarea id="ann-contenu" placeholder="Contenu..." style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-family:inherit;resize:vertical;min-height:80px;font-size:0.9rem"></textarea>
+        <select id="ann-type" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-size:0.9rem">
+          <option value="info">&#8505;&#65039; Info</option>
+          <option value="update">&#128640; Mise &#224; jour</option>
+          <option value="event">&#127881; &#201;v&#233;nement</option>
+          <option value="alerte">&#9888;&#65039; Alerte</option>
+        </select>
+        <button class="btn-primary" style="align-self:flex-start" onclick="publierAnnonce()">&#128226; Publier</button>
+      </div>
+    </div>
+    <div id="annonces-admin-list"></div>
+  </div>
+
+  <div id="admin-tab-annonces" style="display:none">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem">
+      <h3 style="margin-bottom:1rem;font-size:1rem">&#128226; Nouvelle annonce</h3>
+      <div style="display:flex;flex-direction:column;gap:0.75rem">
+        <input id="ann-titre" placeholder="Titre de l annonce" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-size:0.9rem;width:100%" />
+        <textarea id="ann-contenu" placeholder="Contenu..." style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-family:inherit;resize:vertical;min-height:80px;font-size:0.9rem;width:100%"></textarea>
+        <select id="ann-type" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;color:var(--text);font-size:0.9rem">
+          <option value="info">&#8505;&#65039; Info</option>
+          <option value="update">&#128640; Mise &#224; jour</option>
+          <option value="event">&#127881; &#201;v&#233;nement</option>
+          <option value="alerte">&#9888;&#65039; Alerte</option>
+        </select>
+        <button class="btn-primary" style="align-self:flex-start" onclick="publierAnnonce()">&#128226; Publier</button>
+      </div>
+    </div>
+    <div id="annonces-admin-list"></div>
+  </div></div>
 <div id="toast" class="toast"></div>
 <script>
 const QUESTIONS = {
@@ -135,10 +170,13 @@ async function adminLogin() {
 function switchAdminTab(tab) {
   document.getElementById('admin-tab-candidatures').style.display = tab === 'candidatures' ? 'block' : 'none';
   document.getElementById('admin-tab-tickets').style.display = tab === 'tickets' ? 'block' : 'none';
+  document.getElementById('admin-tab-annonces').style.display = tab === 'annonces' ? 'block' : 'none';
   document.getElementById('tab-btn-cand').classList.toggle('active', tab === 'candidatures');
   document.getElementById('tab-btn-tick').classList.toggle('active', tab === 'tickets');
+  document.getElementById('tab-btn-ann').classList.toggle('active', tab === 'annonces');
   if (tab === 'candidatures') loadCandidatures();
   if (tab === 'tickets') loadAdminTickets();
+  if (tab === 'annonces') loadAnnoncesAdmin();
 }
 async function loadCandidatures() {
   const res = await fetch('/api/admin/candidatures');
@@ -283,7 +321,51 @@ async function repondreTicketAdmin(id, statut) {
   if (res.ok) { showToast('R&#233;ponse envoy&#233;e !'); loadAdminTickets(); }
   else showToast('Erreur.', 'error');
 }
-async function adminLogout() {
+async function publierAnnonce() {
+  const titre = document.getElementById('ann-titre').value.trim();
+  const contenu = document.getElementById('ann-contenu').value.trim();
+  const type = document.getElementById('ann-type').value;
+  if (!titre || !contenu) { showToast('Titre et contenu requis.', 'error'); return; }
+  const res = await fetch('/api/annonces', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ titre, contenu, type })
+  });
+  if (res.ok) {
+    showToast('Annonce publi&#233;e !');
+    document.getElementById('ann-titre').value = '';
+    document.getElementById('ann-contenu').value = '';
+    loadAnnoncesAdmin();
+  } else showToast('Erreur.', 'error');
+}
+async function loadAnnoncesAdmin() {
+  const res = await fetch('/api/annonces');
+  if (!res.ok) return;
+  const data = await res.json();
+  const typeLabel = { info:'&#8505;&#65039; Info', update:'&#128640; Mise &#224; jour', event:'&#127881; &#201;v&#233;nement', alerte:'&#9888;&#65039; Alerte' };
+  const list = document.getElementById('annonces-admin-list');
+  if (!data.length) { list.innerHTML = '<div class="empty-state"><p>Aucune annonce.</p></div>'; return; }
+  list.innerHTML = data.map(a => {
+    const date = new Date(a.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    return `<div class="candidature-card" style="margin-bottom:0.75rem">
+      <div style="padding:1rem 1.25rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem">
+            <span style="font-size:0.78rem;padding:0.15rem 0.5rem;border-radius:8px;background:var(--surface2);border:1px solid var(--border)">${typeLabel[a.type]||a.type}</span>
+            <span style="font-size:0.78rem;color:var(--text-muted)">${date} &#8212; par ${escHtml(a.auteur)}</span>
+          </div>
+          <strong style="font-size:0.95rem">${escHtml(a.titre)}</strong>
+          <p style="color:var(--text-muted);font-size:0.88rem;margin-top:0.3rem;line-height:1.5">${escHtml(a.contenu)}</p>
+        </div>
+        <button class="btn-refuse" onclick="supprimerAnnonce(${a.id})">&#128465; Supprimer</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+async function supprimerAnnonce(id) {
+  if (!confirm('Supprimer cette annonce ?')) return;
+  const res = await fetch(`/api/annonces/${id}`, { method: 'DELETE' });
+  if (res.ok) { showToast('Annonce supprim&#233;e.'); loadAnnoncesAdmin(); }
+}async function adminLogout() {
   await fetch('/api/admin/logout', { method: 'POST' });
   location.href = '/';
 }

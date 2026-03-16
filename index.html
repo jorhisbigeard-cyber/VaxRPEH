@@ -82,6 +82,14 @@
   <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Expérience RP</div></div>
 </div>
 
+<div class="section" id="annonces-section" style="display:none">
+  <div class="section-header">
+    <div class="section-tag">&#128226; Annonces</div>
+    <h2>Derni&#232;res annonces</h2>
+  </div>
+  <div id="annonces-index" style="max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:1rem"></div>
+</div>
+
 <div class="section">
   <div class="section-header">
     <div class="section-tag">🌆 Le jeu</div>
@@ -134,6 +142,25 @@ fetch('/api/me').then(r => r.json()).then(user => {
   else if (user.isAdmin) { sb.className = 'badge-admin'; sb.textContent = '🛡️'; sb.style.display = 'inline-flex'; }
   document.getElementById('discord-cta').innerHTML = `<h2>Bienvenue, ${user.username} !</h2><p>Tu es connecté. Tu peux accéder au formulaire de candidature.</p><a href="form.html" class="btn-primary">Accéder au formulaire 📋</a>`;
 }).catch(() => {});
+</script>
+<script>
+fetch('/api/annonces').then(r=>r.json()).then(data=>{
+  if(!data.length) return;
+  document.getElementById('annonces-section').style.display='block';
+  const typeLabel={info:'&#8505;&#65039; Info',update:'&#128640; Mise &#224; jour',event:'&#127881; &#201;v&#233;nement',alerte:'&#9888;&#65039; Alerte'};
+  const typeColor={info:'rgba(59,130,246,0.15)',update:'rgba(16,185,129,0.15)',event:'rgba(251,191,36,0.15)',alerte:'rgba(239,68,68,0.15)'};
+  const typeBorder={info:'rgba(59,130,246,0.4)',update:'rgba(16,185,129,0.4)',event:'rgba(251,191,36,0.4)',alerte:'rgba(239,68,68,0.4)'};
+  document.getElementById('annonces-index').innerHTML=data.map(a=>{
+    const date=new Date(a.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+    const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return '<div style="background:'+typeColor[a.type]||'var(--surface)'+';border:1px solid '+(typeBorder[a.type]||'var(--border)')+';border-radius:12px;padding:1.25rem 1.5rem">'+
+      '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">'+
+      '<span style="font-size:0.78rem;padding:0.15rem 0.5rem;border-radius:8px;background:var(--surface2);border:1px solid var(--border)">'+(typeLabel[a.type]||a.type)+'</span>'+
+      '<span style="font-size:0.78rem;color:var(--text-muted)">'+date+' &#8212; '+esc(a.auteur)+'</span></div>'+
+      '<strong style="font-size:1rem">'+esc(a.titre)+'</strong>'+
+      '<p style="color:var(--text-muted);margin-top:0.4rem;line-height:1.6;font-size:0.9rem">'+esc(a.contenu)+'</p></div>';
+  }).join('');
+}).catch(()=>{});
 </script>
 </body>
 </html>
