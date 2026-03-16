@@ -183,7 +183,7 @@ app.get('/api/admin/candidatures', async (req, res) => {
 });
 
 function isCreator(req) {
-  return req.session.isCreatorCode;
+  return req.session.isCreatorCode || req.session.user?.id === CREATOR_USER_ID;
 }
 
 app.get('/api/creator/check', (req, res) => {

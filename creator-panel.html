@@ -448,7 +448,15 @@ async function deleteCandidature(e, id) {
 }
 
 fetch('/api/creator/init').then(() => {
-  document.getElementById('code-screen').style.display = 'flex';
+  fetch('/api/creator/check').then(r => {
+    if (r.ok) {
+      document.getElementById('code-screen').style.display = 'none';
+      document.getElementById('creator-panel').style.display = 'block';
+      loadCandidatures();
+    } else {
+      document.getElementById('code-screen').style.display = 'flex';
+    }
+  });
 });
 
 async function checkCode() {
