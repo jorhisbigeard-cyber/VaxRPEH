@@ -42,7 +42,7 @@
       Se connecter
     </a>
     <span id="admin-badge" style="display:none;font-size:0.8rem;color:var(--text-muted)">&#128737; Admin</span>
-    <button class="btn-logout" id="btn-admin-logout" style="display:none" onclick="adminLogout()">Quitter le panel</button>
+    <button class="btn-logout" id="btn-admin-logout" style="display:none" onclick="adminLogout()">Quitter le panel admin</button>
   </div>
   <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -62,8 +62,8 @@
 </div>
 <div class="admin-login" id="admin-login">
   <div style="font-size:2.5rem">&#128737;</div>
-  <h2>Acc&#232;s Admin</h2>
-  <p>Entre le code administrateur pour acc&#233;der aux candidatures.</p>
+  <h2>Acc&#232;s au panel admin</h2>
+  <p>Saisis le code administrateur pour acc&#233;der au panel.</p>
   <input type="password" id="admin-code-input" placeholder="Code admin" onkeydown="if(event.key==='Enter') adminLogin()" />
   <button class="btn-primary" onclick="adminLogin()">Acc&#233;der</button>
   <div id="admin-error" style="color:var(--danger);font-size:0.85rem;display:none">Code incorrect.</div>
