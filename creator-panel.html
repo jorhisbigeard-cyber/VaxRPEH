@@ -84,7 +84,7 @@
 <div class="admin-login" id="code-screen">
   <div style="font-size:3rem">👑</div>
   <h2>Panel Créateur</h2>
-  <p>Entre le code d'accès créateur</p>
+  <p>Saisis le code d'acc&#232;s cr&#233;ateur</p>
   <input type="password" id="creator-code-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkCode()" />
   <button class="btn-admin" onclick="checkCode()">Accéder</button>
   <div id="code-error" style="color:var(--danger);font-size:0.85rem;display:none">Code incorrect.</div>
@@ -307,7 +307,7 @@ async function loadBans() {
 async function banUser() {
   const id = document.getElementById('ban-id-input').value.trim();
   const raison = document.getElementById('ban-reason-input').value.trim();
-  if (!id) { showToast('Entre un Discord ID.', 'error'); return; }
+  if (!id) { showToast('Saisis un Discord ID.', 'error'); return; }
   const res = await fetch('/api/ban', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ discordId: id, raison })
