@@ -36,7 +36,7 @@ app.use(session({
 }));
 
 function isStaff(req) {
-  return req.session.isAdmin || req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID || req.session.user?.isAdmin || ADMIN_USER_IDS.includes(req.session.user?.id);
+  return req.session.isAdmin || req.session.isCreatorCode;
 }
 
 async function sendWebhook(entry) {
@@ -183,7 +183,7 @@ app.get('/api/admin/candidatures', async (req, res) => {
 });
 
 function isCreator(req) {
-  return req.session.isCreatorCode || req.session.user?.isCreator || req.session.user?.id === CREATOR_USER_ID;
+  return req.session.isCreatorCode;
 }
 
 app.get('/api/creator/check', (req, res) => {
