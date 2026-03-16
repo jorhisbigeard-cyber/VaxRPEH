@@ -146,7 +146,7 @@ fetch('/api/me').then(r => r.json()).then(user => {
 <script>
 fetch('/api/annonces').then(r=>r.json()).then(data=>{
   if(!data.length) return;
-  document.getElementById('annonces-section').style.display='block';
+  document.getElementById('annonces-section').style.display='block'; document.getElementById('nav-annonces').style.display='inline';
   const typeLabel={info:'&#8505;&#65039; Info',update:'&#128640; Mise &#224; jour',event:'&#127881; &#201;v&#233;nement',alerte:'&#9888;&#65039; Alerte'};
   const typeColor={info:'rgba(59,130,246,0.15)',update:'rgba(16,185,129,0.15)',event:'rgba(251,191,36,0.15)',alerte:'rgba(239,68,68,0.15)'};
   const typeBorder={info:'rgba(59,130,246,0.4)',update:'rgba(16,185,129,0.4)',event:'rgba(251,191,36,0.4)',alerte:'rgba(239,68,68,0.4)'};
